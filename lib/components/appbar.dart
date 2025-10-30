@@ -17,6 +17,23 @@ class _AppbarState extends State<Appbar> {
   Widget build(BuildContext context) {
     ColorScheme colorScheme = Theme.of(context).colorScheme;
 
+    var icones = Row(
+      children: [
+        IconButton(
+          onPressed: () => {},
+          icon: Icon(Icons.filter_list),
+          color: colorScheme.onSecondary,
+          iconSize: 40,
+        ),
+        IconButton(
+          onPressed: () => {},
+          icon: Icon(Icons.settings),
+          color: colorScheme.onSecondary,
+          iconSize: 40,
+        ),
+      ],
+    );
+
     return Container(
      color: colorScheme.secondary ,
      child: Padding(
@@ -39,30 +56,24 @@ class _AppbarState extends State<Appbar> {
                 color: colorScheme.onSecondary
               ),
               child: SizedBox(
-                width: 196,
+                width: isFocused ? 320 : 200,
                 height: 40,
                 child: Form(
                   child: Row(
-                    
+                    children: [
+                      TextField(
+                        onTap: () {
+                          setState(() {
+                            isFocused = true;
+                          });
+                        },
+                      )
+                    ],
                   )
                 ),
               )
-            ),
-            SizedBox(
-              width: 2,
-            ),
-            IconButton(
-              onPressed: () => {},
-              icon: Icon(Icons.filter_list),
-              color: colorScheme.onSecondary,
-              iconSize: 40,
-            ),
-            IconButton(
-              onPressed: () => {},
-              icon: Icon(Icons.settings),
-              color: colorScheme.onSecondary,
-              iconSize: 40,
             ), 
+            if (!isFocused) icones
           ],
         ),
       ), 
