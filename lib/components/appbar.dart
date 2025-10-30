@@ -11,7 +11,7 @@ class Appbar extends StatefulWidget {
 }
 
 class _AppbarState extends State<Appbar> {
-  bool isErect = false;
+  bool isFocused = false;
 
   @override
   Widget build(BuildContext context) {
