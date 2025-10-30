@@ -13,7 +13,38 @@ class DatabaseHelper {
 
   Future _createDb(Database db, int version) async {
     await db.execute('''
-      Tables...
+      CREATE TABLE tbUser(
+      id INTEGER PRIMARY KEY AUTOINCREMENT, 
+      name TEXT NOT NULL, 
+      password TEXT NOT NULL
+      );
+
+      CREATE TABLE tbFolder(
+      id INTEGER PRIMARY KEY AUTOINCREMENT, 
+      name TEXT NOT NULL
+      );
+
+      CREATE TABLE tbImage(
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      title TEXT NOT NULL,
+      date TEXT NOT NULL,
+      idFolder TEXT NOT NULL, 
+      isFavorite INTEGER,
+
+      FOREIGN KEY (idFolder) REFERENCES tbFolder (id)
+      );
+
+      CREATE TABLE tbNote(
+      id INTEGER PRIMARY KEY AUTOINCREMENT, 
+      title TEXT NOT NULL, 
+      text TEXT, 
+      idImage INT NOT NULL, 
+      link TEXT, 
+
+      FOREIGN KEY (idImage) REFERENCES tbImage(id)
+      );
+
+      
     ''');
   }
 
