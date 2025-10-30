@@ -3,12 +3,12 @@ import 'package:pintassilgo/dataBaseHelper.dart';
 
 abstract class GenericDAO<T> {
 
-  T _fromMap(item);
-  Map<String, dynamic> _toMap(object);
+  T fromMap(item);
+  Map<String, dynamic> toMap(T object);
 
   Future<int> add(T object, String table) async {
     Database db = await DatabaseHelper.instance.database;
-    return await db.insert(table, _toMap(object));
+    return await db.insert(table, toMap(object));
   }
 
   Future<int> remove(int id, String table) async {
@@ -18,7 +18,7 @@ abstract class GenericDAO<T> {
 
   Future<int> update(T object, int id, table)async{
     Database db = await DatabaseHelper.instance.database;
-    return await db.update(table, _toMap(object), where: 'id = ?', whereArgs: [id]);
+    return await db.update(table, toMap(object), where: 'id = ?', whereArgs: [id]);
   }
 
   Future<List<T>> list(String table) async{
@@ -26,7 +26,7 @@ abstract class GenericDAO<T> {
     var objects = await db.query(table);
 
     List<T> objectList = objects.isNotEmpty
-    ? objects.map((item) => _fromMap(item)).toList()
+    ? objects.map((item) => fromMap(item)).toList()
     : [];
 
     return objectList;
