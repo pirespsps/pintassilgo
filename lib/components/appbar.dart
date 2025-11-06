@@ -25,7 +25,7 @@ class _AppbarState extends State<Appbar> {
            color: colorScheme.secondary ,
            child: Padding(
               padding: EdgeInsetsGeometry.fromLTRB(0, 45, 10, 0),
-              child: Row(
+              child: Stack(
                 children: [
                   IconButton(
                     onPressed: () => {},
@@ -33,72 +33,73 @@ class _AppbarState extends State<Appbar> {
                     color: colorScheme.onSecondary,
                     iconSize: size.width * 10 / 100,
                   ),
-                  SizedBox(
-                    width: size.width * 2 / 100,
-                  ),
-                  Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.all(Radius.circular(10)),
-                      color: colorScheme.onSecondary
-                    ),
-                    child: AnimatedSize(
-                      duration: Duration(microseconds: 100000),
-                      curve: Curves.linear,
-                      child: SizedBox(
-                        width: isFocused ? size.width * 80 / 100 : size.width * 50 / 100,
-                        height: 40,
-                        child: Form(
-                          child: Row(
-                            children: [
-                              Expanded(
-                                child: TextField(
-                                  cursorColor: Colors.black,
-                                  style: TextStyle(
-                                    color: Colors.black
+                  Positioned(
+                    left: size.width * 15 / 100,
+                    top: size.width * 1.75 / 100,
+                    child: Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.all(Radius.circular(10)),
+                        color: colorScheme.onSecondary
+                      ),
+                      child: AnimatedSize(
+                        duration: Duration(microseconds: 100000),
+                        curve: Curves.linear,
+                        child: SizedBox(
+                          width: isFocused ? size.width * 80 / 100 : size.width * 50 / 100,
+                          height: 40,
+                          child: Form(
+                            child: Row(
+                              children: [
+                                Expanded(
+                                  child: TextField(
+                                    cursorColor: Colors.black,
+                                    style: TextStyle(
+                                      color: Colors.black
+                                    ),
+                                    decoration: InputDecoration(
+                                      contentPadding: EdgeInsets.fromLTRB(5.0, 0.0, 5.0, 9.0),
+                                      border: InputBorder.none
+                                    ),
+                                    onTap: () {
+                                      setState(() {
+                                        isFocused = true;
+                                      });
+                                    },
+                                    onTapOutside: (coisa) {
+                                      setState(() {
+                                        isFocused = false;
+                                        FocusScope.of(context).unfocus();
+                                      });
+                                    },
                                   ),
-                                  decoration: InputDecoration(
-                                    contentPadding: EdgeInsets.fromLTRB(5.0, 0.0, 5.0, 9.0),
-                                    border: InputBorder.none
-                                  ),
-                                  onTap: () {
-                                    setState(() {
-                                      isFocused = true;
-                                    });
-                                  },
-                                  onTapOutside: (coisa) {
-                                    setState(() {
-                                      isFocused = false;
-                                      FocusScope.of(context).unfocus();
-                                    });
-                                  },
-                                ),
-                              )
-                            ],
-                          )
+                                )
+                              ],
+                            )
+                          ),
                         ),
+                      )
+                    ), 
+                  ),
+                  Positioned(
+                    left: size.width * 70 / 100,
+                    child: Expanded(
+                      child: Row(
+                        children: [
+                          IconButton(
+                            onPressed: () => {},
+                            icon: Icon(Icons.filter_list),
+                            color: colorScheme.onSecondary,
+                            iconSize: size.width * 10 / 100,
+                          ),
+                          IconButton(
+                            onPressed: () => {},
+                            icon: Icon(Icons.settings),
+                            color: colorScheme.onSecondary,
+                            iconSize: size.width * 10 / 100,
+                          ),
+                        ],
                       ),
                     )
-                  ), 
-                  Expanded(
-                    child: Row(
-                      children: [
-                        SizedBox(
-                          width: size.width * 1 / 100,
-                        ),
-                        IconButton(
-                          onPressed: () => {},
-                          icon: Icon(Icons.filter_list),
-                          color: colorScheme.onSecondary,
-                          iconSize: size.width * 10 / 100,
-                        ),
-                        IconButton(
-                          onPressed: () => {},
-                          icon: Icon(Icons.settings),
-                          color: colorScheme.onSecondary,
-                          iconSize: size.width * 10 / 100,
-                        ),
-                      ],
-                    ),
                   )
                 ],
               ),

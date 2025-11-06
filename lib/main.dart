@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pintassilgo/components/appbar.dart';
+import 'package:pintassilgo/components/pasta.dart';
 
 const AMARELO = Color.fromARGB(255, 255, 213, 42);//"#ffd52a" 
 
@@ -20,6 +21,10 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      debugShowMaterialGrid: false,
+      showSemanticsDebugger: false,
+
       title: 'Pintassilgo',
       theme: ThemeData(
         colorScheme: ColorScheme(surface: MARROM, primary: BRANCO, secondary: MARROM_CLARO, brightness: Brightness.light, error: VERMELHO, onError: BRANCO, onPrimary: Colors.black, onSecondary: BRANCO, onSurface: BRANCO),
@@ -42,10 +47,26 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.sizeOf(context);
+
     return Scaffold(
       body: Column(
         children: [
-          Appbar()
+          Appbar(),
+          Expanded(
+            child: Padding(
+              padding: const EdgeInsets.fromLTRB(30,0.0,0.0,0.0),
+              child: ListView(
+                children: [
+                  Pasta(),
+                  Pasta(),
+                  Pasta(),
+                  Pasta(),
+                  Pasta()
+                ],
+              ),
+            ),
+          )
         ],
       )
     );
