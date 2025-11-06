@@ -42,7 +42,7 @@ class _AppbarState extends State<Appbar> {
                       color: colorScheme.onSecondary
                     ),
                     child: AnimatedSize(
-                      duration: Duration(seconds: 6),
+                      duration: Duration(microseconds: 100000),
                       curve: Curves.linear,
                       child: SizedBox(
                         width: isFocused ? size.width * 80 / 100 : size.width * 50 / 100,
