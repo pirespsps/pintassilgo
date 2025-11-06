@@ -2,6 +2,8 @@ import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:pintassilgo/components/appbar.dart';
 import 'package:pintassilgo/components/field.dart';
+import 'package:pintassilgo/views/registro.dart';
+
 
 const AMARELO = Color.fromARGB(255, 255, 213, 42);//"#ffd52a" 
 
@@ -37,7 +39,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         colorScheme: ColorScheme(surface: MARROM, primary: BRANCO, secondary: MARROM_CLARO, brightness: Brightness.light, error: VERMELHO, onError: BRANCO, onPrimary: Colors.black, onSecondary: BRANCO, onSurface: BRANCO),
       ),
-      home: const MyHomePage(title: 'Pintassilgo'),
+      home: Registro(),
     );
   }
 }
