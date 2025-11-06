@@ -1,5 +1,7 @@
+import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:pintassilgo/components/appbar.dart';
+import 'package:pintassilgo/components/field.dart';
 
 const AMARELO = Color.fromARGB(255, 255, 213, 42);//"#ffd52a" 
 
@@ -10,7 +12,18 @@ const BRANCO = Color.fromARGB(255, 250, 250, 246); //"#fafaf6"
 const CINZA = Color.fromARGB(255, 223, 223, 223);//"#dfdfdf"
 
 const VERMELHO = Color.fromARGB(255, 232, 65, 42); //#e8412a
-void main() {
+void main() async {
+  
+  // Ensure that plugin services are initialized so that `availableCameras()`
+  // can be called before `runApp()`
+  WidgetsFlutterBinding.ensureInitialized();
+
+  // Obtain a list of the available cameras on the device.
+  final cameras = await availableCameras();
+
+  // Get a specific camera from the list of available cameras.
+  final firstCamera = cameras.first;
+
   runApp(const MyApp());
 }
 
@@ -49,5 +62,6 @@ class _MyHomePageState extends State<MyHomePage> {
         ],
       )
     );
+
   }
 }
