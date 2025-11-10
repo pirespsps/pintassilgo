@@ -4,7 +4,8 @@ import 'package:pintassilgo/components/appbar.dart';
 import 'package:pintassilgo/components/pinta.dart';
 
 class FolderView extends StatefulWidget {
-  const FolderView({super.key});
+  final String nome;
+  const FolderView({super.key, required this.nome});
 
   @override
   State<FolderView> createState() => _FolderViewState();
@@ -19,33 +20,42 @@ class _FolderViewState extends State<FolderView> {
       body: Column(
         children: [
           Appbar(),
-          Row(
-            children: [
-              IconButton(
-                onPressed: () {},
-                icon: Icon(Icons.keyboard_return),
-                iconSize: size.width * 10 / 100,
-              ),
-              Text(
-                "Título",
-                style: GoogleFonts.notoSans(
-                  fontSize: 40,
-                  fontWeight: FontWeight.bold
-                )
-              ),
-              IconButton(
-                onPressed: () {},
-                icon: Icon(Icons.edit),
-                iconSize: size.width * 10 / 100,
-              ),
-              IconButton(
-                onPressed: () {},
-                icon: Icon(Icons.star),iconSize: size.width * 10 / 100,
-              ),
-            ],
+          SizedBox(
+            width: size.width,
+            child: Wrap(
+              alignment: WrapAlignment.start,
+              runAlignment: WrapAlignment.start,
+            
+              children: [
+                IconButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  icon: Icon(Icons.keyboard_return),
+                  iconSize: size.width * 10 / 100,
+                ),
+                Text(
+                  widget.nome,
+                  style: GoogleFonts.notoSans(
+                    fontSize: 40,
+                    fontWeight: FontWeight.bold
+                  )
+                ),
+                IconButton(
+                  onPressed: () {},
+                  icon: Icon(Icons.edit),
+                  iconSize: size.width * 10 / 100,
+                ),
+                IconButton(
+                  onPressed: () {},
+                  icon: Icon(Icons.star),iconSize: size.width * 10 / 100,
+                ),
+              ],
+            ),
           ),
           Expanded(
             child: ListView(
+              
               children: [
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,

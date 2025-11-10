@@ -44,15 +44,13 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         colorScheme: ColorScheme(surface: MARROM, primary: BRANCO, secondary: MARROM_CLARO, brightness: Brightness.light, error: VERMELHO, onError: BRANCO, onPrimary: Colors.black, onSecondary: BRANCO, onSurface: BRANCO),
       ),
-      home: FolderView(),
+      home: MyHomePage(),
     );
   }
 }
 
 class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
-
-  final String title;
+  const MyHomePage({super.key});
 
   @override
   State<MyHomePage> createState() => _MyHomePageState();
@@ -73,16 +71,16 @@ class _MyHomePageState extends State<MyHomePage> {
               shrinkWrap: true,
               children: [
                 Center(
-                  child: Pasta(),
+                  child: Pasta(nome: "Cogumelos",),
                 ),
                 Center(
-                  child: Pasta(),
+                  child: Pasta(nome: "Aves"),
                 ),
                 Center(
-                  child: Pasta(),
+                  child: Pasta(nome: "Animais silvestres"),
                 ),
                 Center(
-                  child: Pasta(),
+                  child: Pasta(nome: "Slime molds"),
                 ),
               ],
             ),
