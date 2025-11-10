@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:pintassilgo/components/appbar.dart';
 import 'package:pintassilgo/components/pasta.dart';
 import 'package:pintassilgo/components/field.dart';
+import 'package:pintassilgo/views/folderView.dart';
 import 'package:pintassilgo/views/registro.dart';
 
 const AMARELO = Color.fromARGB(255, 255, 213, 42);//"#ffd52a" 
@@ -43,7 +44,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         colorScheme: ColorScheme(surface: MARROM, primary: BRANCO, secondary: MARROM_CLARO, brightness: Brightness.light, error: VERMELHO, onError: BRANCO, onPrimary: Colors.black, onSecondary: BRANCO, onSurface: BRANCO),
       ),
-      home: Registro(),
+      home: FolderView(),
     );
   }
 }
@@ -68,17 +69,22 @@ class _MyHomePageState extends State<MyHomePage> {
         children: [
           Appbar(),
           Expanded(
-            child: Padding(
-              padding: const EdgeInsets.fromLTRB(30,0.0,0.0,0.0),
-              child: ListView(
-                children: [
-                  Pasta(),
-                  Pasta(),
-                  Pasta(),
-                  Pasta(),
-                  Pasta()
-                ],
-              ),
+            child: ListView(
+              shrinkWrap: true,
+              children: [
+                Center(
+                  child: Pasta(),
+                ),
+                Center(
+                  child: Pasta(),
+                ),
+                Center(
+                  child: Pasta(),
+                ),
+                Center(
+                  child: Pasta(),
+                ),
+              ],
             ),
           )
         ],
