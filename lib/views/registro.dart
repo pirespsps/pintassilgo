@@ -28,6 +28,8 @@ class _RegistroState extends State<Registro> {
     Size size = MediaQuery.of(context).size;
 
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
         SizedBox(
           height: size.height * 15 / 100,
