@@ -1,5 +1,6 @@
 
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
 
 class Appbar extends StatefulWidget {
@@ -12,10 +13,16 @@ class Appbar extends StatefulWidget {
 class _AppbarState extends State<Appbar> {
   bool isFocused = false;
 
+  OverlayEntry? _overlayAdd;
+
+  void removeOverlayAdd() {
+    _overlayAdd!.remove();
+  }
+
   @override
   Widget build(BuildContext context) {
-    ColorScheme colorScheme = Theme.of(context).colorScheme;
     Size size = MediaQuery.of(context).size;
+    ColorScheme colorScheme = Theme.of(context).colorScheme;
 
     return Row(
       children: [
@@ -28,7 +35,42 @@ class _AppbarState extends State<Appbar> {
               child: Stack(
                 children: [
                   IconButton(
-                    onPressed: () => {},
+                    onPressed: () {
+                      _overlayAdd = OverlayEntry(
+                        builder: (BuildContext context) {
+                          ColorScheme colorScheme = Theme.of(context).colorScheme;
+
+                          return Column(
+                            crossAxisAlignment: CrossAxisAlignment.stretch,
+                            children: [
+                              Expanded(
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    color: Color.fromARGB(120, 0, 0, 0)
+                                  ),
+                                  child: Center(
+                                    child: Container(
+                                      decoration: BoxDecoration(
+                                        color: colorScheme.primary
+                                      ),
+                                      child: TextButton(
+                                        onPressed: () {
+                                          removeOverlayAdd();
+                                        },
+                                        child: Text("Fechar")),
+                                    ),
+                                  ),
+                                )
+                              )
+                            ],
+                          );
+                        }
+                      );
+                      Overlay.of(context, debugRequiredFor: widget).insert(
+                        _overlayAdd!
+                      );
+                      RenderPerformanceOverlay();
+                    },
                     icon: Icon(Icons.add_circle_outline_rounded),
                     color: colorScheme.onSecondary,
                     iconSize: size.width * 10 / 100,
