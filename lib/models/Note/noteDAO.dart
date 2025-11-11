@@ -1,7 +1,10 @@
 import 'package:pintassilgo/models/Note/note.dart';
 import 'package:pintassilgo/models/genericDAO.dart';
 
-class Userdao extends GenericDAO<Note> {
+class NoteDAO extends GenericDAO<Note> {
+
+  @override
+  String table = "tbNote";
 
   @override
   Note fromMap(item){

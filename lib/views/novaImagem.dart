@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:pintassilgo/components/field.dart';
 import 'package:pintassilgo/main.dart';
+import 'package:pintassilgo/models/Folder/folder.dart';
+import 'package:pintassilgo/models/Folder/folderDAO.dart';
 
 class NovaImagem extends StatefulWidget {
   const NovaImagem({super.key});
@@ -14,6 +16,9 @@ class _NovaImagemState extends State<NovaImagem> {
   final TextEditingController _tituloController = TextEditingController();
   final TextEditingController _notaController = TextEditingController();
   final TextEditingController _linksController = TextEditingController();
+
+  final List<String> _folders = ["Ola", "dasd"]; //mudar para objeto folder
+  String? _selectedItem;
 
   @override
   Widget build(BuildContext context) {
@@ -41,7 +46,16 @@ class _NovaImagemState extends State<NovaImagem> {
                 ),
               ),
 
+              Container(
+                height: 250,
+                width: size.width-50,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(3),
+                  color: CINZA,
+                ),
+              ),
               Form(
+                key: _formkey,
                 child: Column(
                   spacing: 10,
                   children: [
@@ -65,6 +79,50 @@ class _NovaImagemState extends State<NovaImagem> {
                       width: size.width - 50,
                       height: 65,
                     ),
+
+                    Container(
+                      width: size.width - 50,
+                      decoration: BoxDecoration(
+                        color: CINZA,
+                        borderRadius: BorderRadius.circular(7),
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 3.0),
+                        child: DropdownButton(
+                          dropdownColor: CINZA,
+                          style: TextStyle(color: MARROM),
+                          menuWidth: size.width - 10,
+                          icon: Padding(
+                            padding: EdgeInsetsGeometry.only(
+                              left: size.width - 140,
+                              right: 10,
+                            ),
+                            child: Icon(
+                              Icons.arrow_drop_down,
+                              color: MARROM,
+                              size: 40,
+                            ),
+                          ),
+
+                          value: _selectedItem,
+                          items: _folders.map<DropdownMenuItem<String>>((
+                            //DropDownMenuItem<Folder> 
+                            String item,) {
+                            //mudar os tipos para folder
+                            return DropdownMenuItem<String>(
+                              //dropdownMenuItem<Folder>
+                              value: item, //folder.id
+                              child: Text(item), //folder.name
+                            );
+                          }).toList(),
+                          onChanged: (String? item) {
+                            setState(() {
+                              _selectedItem = item;
+                            });
+                          },
+                        ),
+                      ),
+                    ),
                   ],
                 ),
               ),
@@ -72,10 +130,8 @@ class _NovaImagemState extends State<NovaImagem> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  TextButton(onPressed: () {
-                    Navigator.pop(context);
-                  }, child: Text("cancelar")),
-                  TextButton(onPressed: () {}, child: Text("criar")),
+                  FilledButton(onPressed: () {}, child: Text("cancelar")),
+                  FilledButton(onPressed: () {}, child: Text("criar")),
                 ],
               ),
             ],

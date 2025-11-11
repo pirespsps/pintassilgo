@@ -1,7 +1,10 @@
 import 'package:pintassilgo/models/Tag/tag.dart';
 import 'package:pintassilgo/models/genericDAO.dart';
 
-class Userdao extends GenericDAO<Tag> {
+class TagDAO extends GenericDAO<Tag> {
+
+  @override
+  String table = "tbTag";
 
   @override
   Tag fromMap(item){
