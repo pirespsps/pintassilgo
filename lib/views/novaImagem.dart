@@ -10,7 +10,6 @@ class NovaImagem extends StatefulWidget {
 }
 
 class _NovaImagemState extends State<NovaImagem> {
-  
   final _formkey = GlobalKey<FormState>();
   final TextEditingController _tituloController = TextEditingController();
   final TextEditingController _notaController = TextEditingController();
@@ -42,28 +41,40 @@ class _NovaImagemState extends State<NovaImagem> {
                 ),
               ),
 
-              Field(
-                formKey: _formkey,
-                text: "título",
-                fieldController: _tituloController,
-                width: size.width - 50,
-                height: 65,
+              Form(
+                child: Column(
+                  spacing: 10,
+                  children: [
+                    Field(
+                      text: "título",
+                      fieldController: _tituloController,
+                      width: size.width - 50,
+                      height: 65,
+                    ),
+
+                    Field(
+                      text: "nota",
+                      fieldController: _notaController,
+                      width: size.width - 50,
+                      height: 65,
+                    ),
+
+                    Field(
+                      text: "links",
+                      fieldController: _linksController,
+                      width: size.width - 50,
+                      height: 65,
+                    ),
+                  ],
+                ),
               ),
 
-              Field(
-                formKey: _formkey,
-                text: "nota",
-                fieldController: _notaController,
-                width: size.width - 50,
-                height: 65,
-              ),
-
-              Field(
-                formKey: _formkey,
-                text: "links",
-                fieldController: _linksController,
-                width: size.width - 50,
-                height: 65,
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  TextButton(onPressed: () {}, child: Text("cancelar")),
+                  TextButton(onPressed: () {}, child: Text("criar")),
+                ],
               ),
             ],
           ),

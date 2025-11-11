@@ -2,17 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:pintassilgo/main.dart';
 
 class Field extends StatefulWidget {
-  final GlobalKey<FormState> formKey;
   final TextEditingController fieldController;
   final String text;
   final double? height;
   final double? width;
+  final String? Function(String?)? validator;
 
   const Field({
     super.key,
-    required this.formKey,
     required this.fieldController,
     required this.text,
+    this.validator,
     this.height,
     this.width,
   });
@@ -48,11 +48,19 @@ class _FieldFormState extends State<Field> {
             height: (widget.height! * 0.6),
             child: Padding(
               padding: const EdgeInsets.all(5.0),
-              child: TextField(
+              child: TextFormField(
                 controller: widget.fieldController,
                 style: TextStyle(color: Colors.black),
                 cursorColor: Colors.black,
                 cursorHeight: 15,
+                validator: widget.validator ?? 
+                (value){
+                  if(value == null || value.isEmpty){
+                    return "Entre com um texto válido";
+                  }
+                  return null;
+                },
+                
                 decoration: InputDecoration(
                   enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: CINZA_ESCURO)),
                   focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: CINZA_ESCURO)),
