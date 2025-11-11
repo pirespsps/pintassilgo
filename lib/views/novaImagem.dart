@@ -72,7 +72,9 @@ class _NovaImagemState extends State<NovaImagem> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  TextButton(onPressed: () {}, child: Text("cancelar")),
+                  TextButton(onPressed: () {
+                    Navigator.pop(context);
+                  }, child: Text("cancelar")),
                   TextButton(onPressed: () {}, child: Text("criar")),
                 ],
               ),

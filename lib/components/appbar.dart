@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
+import 'package:pintassilgo/views/novaImagem.dart';
 
 class Appbar extends StatefulWidget {
   const Appbar({super.key});
@@ -49,15 +50,32 @@ class _AppbarState extends State<Appbar> {
                                     color: Color.fromARGB(120, 0, 0, 0)
                                   ),
                                   child: Center(
-                                    child: Container(
-                                      decoration: BoxDecoration(
-                                        color: colorScheme.primary
+                                    child: Padding(
+                                      padding: EdgeInsets.fromLTRB(0.0, size.height * 0.1, 0.0, size.height * 0.1),
+                                      child: Container(
+                                        decoration: BoxDecoration(
+                                          color: colorScheme.surface
+                                        ),
+                                        child: Column(
+                                          children: [
+                                            IconButton(
+                                              onPressed: () {
+                                                removeOverlayAdd();
+                                              },
+                                              icon: Icon(Icons.close),
+                                            ),
+                                            TextButton(
+                                              onPressed: () {
+                                                removeOverlayAdd();
+                                                Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) {
+                                                  return NovaImagem();
+                                                }));
+                                              }, 
+                                              child: Text("Enviar nova imagem")
+                                            )
+                                          ],
+                                        )
                                       ),
-                                      child: TextButton(
-                                        onPressed: () {
-                                          removeOverlayAdd();
-                                        },
-                                        child: Text("Fechar")),
                                     ),
                                   ),
                                 )
