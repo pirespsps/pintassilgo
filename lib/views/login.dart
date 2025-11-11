@@ -46,70 +46,73 @@ class _LoginState extends State<Login> {
               color: Theme.of(context).colorScheme.primary,
               borderRadius: BorderRadius.only(topRight: Radius.circular(50)),
             ),
-            child: Column(
-              children: [
-                Center(child: Text('login', style: TextStyle( fontSize: 60, color: Theme.of(context).colorScheme.primary, decoration: TextDecoration.none)),),
+            child: Form(
+              key: _formKey,
+              child: Column(
+                children: [
+                  Center(child: Text('login', style: TextStyle( fontSize: 60, color: Theme.of(context).colorScheme.primary, decoration: TextDecoration.none)),),
+                  Center(
+                    child: Field(
+                      text: "usuario",
+                      fieldController: _nomeController,
+                      width: size.width - 50,
+                      height: 65,
+                      validator: (value){
+                        if(value == null || value.isEmpty ){
+                          return 'este campo é obrigatório';
+                        // }else if(){
+                        //   // usuario n corresponde
+                        //   return 'este usuário não existe';
+                        }else{
+                          return null;
+                        }
+                      },
+                      ),
+                  ),
                 Center(
                   child: Field(
-                    text: "usuario",
-                    fieldController: _nomeController,
+                    text: "senha",
+                    fieldController: _senhaController,
                     width: size.width - 50,
                     height: 65,
                     validator: (value){
                       if(value == null || value.isEmpty ){
                         return 'este campo é obrigatório';
                       // }else if(){
-                      //   // usuario n corresponde
-                      //   return 'este usuário não existe';
+                      //   // compara com a senha
+                      //   return 'senha incorreta';
                       }else{
                         return null;
                       }
                     },
+                  ),
+                ),
+                Center(
+                  child: ElevatedButton(
+                    style: ButtonStyle(
+                      backgroundColor: WidgetStatePropertyAll(Theme.of(context).colorScheme.secondary)
                     ),
+                    child: Text("entrar)",
+                      style: TextStyle(fontSize: 25),
+                    ),
+                    onPressed: () async {
+                      //entrar no site
+                    },
+                  ),
                 ),
-              Center(
-                child: Field(
-                  text: "senha",
-                  fieldController: _senhaController,
-                  width: size.width - 50,
-                  height: 65,
-                  validator: (value){
-                    if(value == null || value.isEmpty ){
-                      return 'este campo é obrigatório';
-                    // }else if(){
-                    //   // compara com a senha
-                    //   return 'senha incorreta';
-                    }else{
-                      return null;
-                    }
-                  },
-                ),
+                Center(
+                  child: TextButton(
+                    child: Text("criar uma conta",
+                      style: TextStyle(fontSize: 15),
+                    ),
+                    onPressed: () async {
+                      Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => const Registro(),),);
+                    },
+                  ),
+                )
+                ],
               ),
-              Center(
-                child: ElevatedButton(
-                  style: ButtonStyle(
-                    backgroundColor: WidgetStatePropertyAll(Theme.of(context).colorScheme.secondary)
-                  ),
-                  child: Text("entrar)",
-                    style: TextStyle(fontSize: 25),
-                  ),
-                  onPressed: () async {
-                    //entrar no site
-                  },
-                ),
-              ),
-              Center(
-                child: TextButton(
-                  child: Text("criar uma conta",
-                    style: TextStyle(fontSize: 15),
-                  ),
-                  onPressed: () async {
-                    Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => const Registro(),),);
-                  },
-                ),
-              )
-              ],
             ),
           ),
         ),

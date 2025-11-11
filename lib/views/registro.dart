@@ -47,87 +47,90 @@ class _RegistroState extends State<Registro> {
               color: Theme.of(context).colorScheme.primary,
               borderRadius: BorderRadius.only(topRight: Radius.circular(50)),
             ),
-            child: Column(
-              children: [
-                Center(child: Text('registro', style: TextStyle( fontSize: 60, color: Theme.of(context).colorScheme.primary, decoration: TextDecoration.none)),),
+            child: Form(
+              key: _formKey,
+              child: Column(
+                children: [
+                  Center(child: Text('registro', style: TextStyle( fontSize: 60, color: Theme.of(context).colorScheme.primary, decoration: TextDecoration.none)),),
+                  Center(
+                    child: Field(
+                      text: "usuario",
+                      fieldController: _nomeController,
+                      width: size.width - 50,
+                      height: 65,
+                      validator: (value){
+                        if(value == null || value.isEmpty ){
+                          return 'este campo é obrigatório';
+                        // }else if(){
+                        //   // usuario ja existe
+                        //   return 'este nome de usuário já existe';
+                        }else{
+                          return null;
+                        }
+                      },
+                      ),
+                  ),
                 Center(
                   child: Field(
-                    text: "usuario",
-                    fieldController: _nomeController,
+                    text: "senha",
+                    fieldController: _senhaController,
                     width: size.width - 50,
                     height: 65,
                     validator: (value){
                       if(value == null || value.isEmpty ){
                         return 'este campo é obrigatório';
                       // }else if(){
-                      //   // usuario ja existe
-                      //   return 'este nome de usuário já existe';
+                      //   // compara com o da outra senha
+                      //   return 'este campo e o campo de confirmação devem ser iguais';
                       }else{
                         return null;
                       }
                     },
+                  ),
+                ),
+                Center(
+                  child: Field(
+                      text: "confirme sua senha",
+                      fieldController: _confirmarSenhaController,
+                      width: size.width - 50,
+                      height: 65,
+                      validator: (value){
+                        if(value == null || value.isEmpty ){
+                          return 'este campo é obrigatório';
+                        // }else if(){
+                        //   // compara com o da senha
+                        //   return 'este campo e o campo de senha devem ser iguais';
+                        }else{
+                          return null;
+                        }
+                      },
+                  ),
+                ),
+                Center(
+                  child: ElevatedButton(
+                    style: ButtonStyle(
+                      backgroundColor: WidgetStatePropertyAll(Theme.of(context).colorScheme.secondary)
                     ),
-                ),
-              Center(
-                child: Field(
-                  text: "senha",
-                  fieldController: _senhaController,
-                  width: size.width - 50,
-                  height: 65,
-                  validator: (value){
-                    if(value == null || value.isEmpty ){
-                      return 'este campo é obrigatório';
-                    // }else if(){
-                    //   // compara com o da outra senha
-                    //   return 'este campo e o campo de confirmação devem ser iguais';
-                    }else{
-                      return null;
-                    }
-                  },
-                ),
-              ),
-              Center(
-                child: Field(
-                    text: "confirme sua senha",
-                    fieldController: _confirmarSenhaController,
-                    width: size.width - 50,
-                    height: 65,
-                    validator: (value){
-                      if(value == null || value.isEmpty ){
-                        return 'este campo é obrigatório';
-                      // }else if(){
-                      //   // compara com o da senha
-                      //   return 'este campo e o campo de senha devem ser iguais';
-                      }else{
-                        return null;
-                      }
+                    child: Text("cadastrar)",
+                      style: TextStyle(fontSize: 25),
+                    ),
+                    onPressed: () async {
+                      //cadastrar o usuario e entrar no sistema
                     },
+                  ),
                 ),
+                Center(
+                  child: TextButton(
+                    child: Text("entrar (já tenho conta)",
+                      style: TextStyle(fontSize: 15),
+                    ),
+                    onPressed: () async {
+                      Navigator.pop(context);
+                    },
+                  ),
+                )
+                ],
               ),
-              Center(
-                child: ElevatedButton(
-                  style: ButtonStyle(
-                    backgroundColor: WidgetStatePropertyAll(Theme.of(context).colorScheme.secondary)
-                  ),
-                  child: Text("cadastrar)",
-                    style: TextStyle(fontSize: 25),
-                  ),
-                  onPressed: () async {
-                    //cadastrar o usuario e entrar no sistema
-                  },
-                ),
-              ),
-              Center(
-                child: TextButton(
-                  child: Text("entrar (já tenho conta)",
-                    style: TextStyle(fontSize: 15),
-                  ),
-                  onPressed: () async {
-                    //tela de login
-                  },
-                ),
-              )
-              ],
             ),
           ),
         ),
