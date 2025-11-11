@@ -1,7 +1,10 @@
 import 'package:pintassilgo/models/Image/image.dart';
 import 'package:pintassilgo/models/genericDAO.dart';
 
-class Userdao extends GenericDAO<Image> {
+class ImageDAO extends GenericDAO<Image> {
+
+  @override
+  String table = "tbUser";
 
   @override
   Image fromMap(item){

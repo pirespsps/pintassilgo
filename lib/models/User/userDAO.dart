@@ -1,7 +1,10 @@
 import 'package:pintassilgo/models/User/user.dart';
 import 'package:pintassilgo/models/genericDAO.dart';
 
-class Userdao extends GenericDAO<User> {
+class UserDAO extends GenericDAO<User> {
+
+  @override
+  String table = "tbUser";
 
   @override
   User fromMap(item){
