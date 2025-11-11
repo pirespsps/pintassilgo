@@ -55,7 +55,6 @@ class _RegistroState extends State<Registro> {
                 Center(child: Text('registro', style: TextStyle( fontSize: 60, color: Theme.of(context).colorScheme.primary, decoration: TextDecoration.none)),),
                 Center(
                   child: Field(
-                    formKey: _formKey,
                     text: "usuario",
                     fieldController: _nomeController,
                     width: size.width - 50,
@@ -64,7 +63,6 @@ class _RegistroState extends State<Registro> {
                 ),
               Center(
                 child: Field(
-                    formKey: _formKey,
                     text: "senha",
                     fieldController: _senhaController,
                     width: size.width - 50,
@@ -73,7 +71,6 @@ class _RegistroState extends State<Registro> {
               ),
               Center(
                 child: Field(
-                    formKey: _formKey,
                     text: "confirme sua senha",
                     fieldController: _confirmarSenhaController,
                     width: size.width - 50,
