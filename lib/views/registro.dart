@@ -17,12 +17,6 @@ class _RegistroState extends State<Registro> {
   final TextEditingController _confirmarSenhaController = TextEditingController();
 
   @override
-  void initState(){
-    super.initState();
-    //NAO SEI O QUE FAZER
-  }
-
-  @override
   void dispose(){
     _nomeController.dispose();
     _senhaController.dispose();
@@ -59,14 +53,34 @@ class _RegistroState extends State<Registro> {
                     fieldController: _nomeController,
                     width: size.width - 50,
                     height: 65,
-                                ),
+                    validator: (value){
+                      if(value == null || value.isEmpty ){
+                        return 'este campo é obrigatório';
+                      // }else if(){
+                      //   // usuario ja existe
+                      //   return 'este nome de usuário já existe';
+                      }else{
+                        return null;
+                      }
+                    },
+                    ),
                 ),
               Center(
                 child: Field(
-                    text: "senha",
-                    fieldController: _senhaController,
-                    width: size.width - 50,
-                    height: 65,
+                  text: "senha",
+                  fieldController: _senhaController,
+                  width: size.width - 50,
+                  height: 65,
+                  validator: (value){
+                    if(value == null || value.isEmpty ){
+                      return 'este campo é obrigatório';
+                    // }else if(){
+                    //   // compara com o da outra senha
+                    //   return 'este campo e o campo de confirmação devem ser iguais';
+                    }else{
+                      return null;
+                    }
+                  },
                 ),
               ),
               Center(
@@ -75,6 +89,16 @@ class _RegistroState extends State<Registro> {
                     fieldController: _confirmarSenhaController,
                     width: size.width - 50,
                     height: 65,
+                    validator: (value){
+                      if(value == null || value.isEmpty ){
+                        return 'este campo é obrigatório';
+                      // }else if(){
+                      //   // compara com o da senha
+                      //   return 'este campo e o campo de senha devem ser iguais';
+                      }else{
+                        return null;
+                      }
+                    },
                 ),
               ),
               Center(
