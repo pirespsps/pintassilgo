@@ -69,7 +69,7 @@ class _LoginState extends State<Login> {
                       validator: (value){
                         if(value == null || value.isEmpty ){
                           return 'este campo é obrigatório';
-                        // }else if(){
+                        // }else if(value != TODOS OS USUARIOS CADASTRADOS){
                         //   // usuario n corresponde
                         //   return 'este usuário não existe';
                         }else{
@@ -86,7 +86,7 @@ class _LoginState extends State<Login> {
                       validator: (value){
                         if(value == null || value.isEmpty ){
                           return 'este campo é obrigatório';
-                        // }else if(){
+                        // }else if(value != senha do usuario digitado){
                         //   // compara com a senha
                         //   return 'senha incorreta';
                         }else{

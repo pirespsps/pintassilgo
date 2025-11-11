@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:pintassilgo/components/field.dart';
 import 'package:pintassilgo/models/User/user.dart';
-import 'package:pintassilgo/models/User/userDAO.dart';
 
 class Registro extends StatefulWidget {
   final User? user;
@@ -70,7 +68,7 @@ class _RegistroState extends State<Registro> {
                       validator: (value){
                         if(value == null || value.isEmpty ){
                           return 'este campo é obrigatório';
-                        // }else if(){
+                        // }else if(value == TODOS OS USUARIO CADASTRADOS){
                         //   // usuario ja existe
                         //   return 'este usuário já existe';
                         }else{
@@ -87,9 +85,6 @@ class _RegistroState extends State<Registro> {
                       validator: (value){
                         if(value == null || value.isEmpty ){
                           return 'este campo é obrigatório';
-                        // }else if(){
-                        //   // compara com a senha
-                        //   return 'senha incorreta';
                         }else{
                           return null;
                         }
@@ -105,7 +100,7 @@ class _RegistroState extends State<Registro> {
                       validator: (value){
                         if(value == null || value.isEmpty ){
                           return 'este campo é obrigatório';
-                        // }else if(){
+                        // }else if(value != VALUE DO CAMPO DAS SENHAS){
                         //   // compara com a senha
                         //   return 'senha incorreta';
                         }else{
@@ -129,17 +124,7 @@ class _RegistroState extends State<Registro> {
                           ),
                           onPressed: () async {
                             //entrar no site
-                            User user = User(
-                              name: _nomeController.text,
-                              password: _senhaController.text //criptografia
-                            );
-
-                            UserDAO userDAO = UserDAO();
-
-                            int id = await userDAO.add(user);
-
-                            final storage = FlutterSecureStorage();
-                            storage.write(key: "user", value: id.toString());
+                            
                           },
                         ),
                         TextButton(
