@@ -20,6 +20,7 @@ class _RegistroState extends State<Registro> {
   void dispose(){
     _nomeController.dispose();
     _senhaController.dispose();
+    _confirmarSenhaController.dispose();
   }
 
   @override
@@ -112,6 +113,7 @@ class _RegistroState extends State<Registro> {
                     style: TextStyle(fontSize: 25),
                   ),
                   onPressed: () async {
+                    //cadastrar o usuario e entrar no sistema
                   },
                 ),
               ),
@@ -121,6 +123,7 @@ class _RegistroState extends State<Registro> {
                     style: TextStyle(fontSize: 15),
                   ),
                   onPressed: () async {
+                    //tela de login
                   },
                 ),
               )
