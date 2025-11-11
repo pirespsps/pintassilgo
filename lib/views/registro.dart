@@ -81,7 +81,10 @@ class _RegistroState extends State<Registro> {
                 ),
               ),
               Center(
-                child: TextButton(
+                child: ElevatedButton(
+                  style: ButtonStyle(
+                    backgroundColor: WidgetStatePropertyAll(Theme.of(context).colorScheme.secondary)
+                  ),
                   child: Text("cadastrar)",
                     style: TextStyle(fontSize: 25),
                   ),
