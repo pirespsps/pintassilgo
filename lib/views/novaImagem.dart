@@ -24,6 +24,13 @@ class _NovaImagemState extends State<NovaImagem> {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
 
+    @override
+  void dispose(){
+    _tituloController.dispose();
+    _notaController.dispose();
+    _linksController.dispose();
+  }
+
     return Scaffold(
       body: Container(
         color: MARROM_CLARO,

@@ -45,7 +45,7 @@ class _FieldFormState extends State<Field> {
             ),
           ),
           SizedBox(
-            height: (widget.height! * 0.6),
+            height: widget.height == null? (widget.height! * 0.6) : 30,
             child: Padding(
               padding: const EdgeInsets.all(5.0),
               child: TextFormField(
