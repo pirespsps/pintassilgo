@@ -19,15 +19,15 @@ class FolderDAO extends GenericDAO<Folder> {
     return object.toMap();
   }
 
-  //List<Folder> foldersByUser(int id) async{
-  //  Database db = await DatabaseHelper.instance.database;
-  //  var objects = await db.query(table, where: "idUser = ?", whereArgs: [id]);
-//
-  //  List<Folder> objectList = objects.isNotEmpty
-  //  ? objects.map((item) => fromMap(item)).toList()
-  //  : [];
-//
-  //  return Future(objectList);
-  //}
+  Future<List<Folder>> foldersByUser(int id) async{
+    Database db = await DatabaseHelper.instance.database;
+    var objects = await db.query(table, where: "idUser = ?", whereArgs: [id]);
+
+    List<Folder> objectList = objects.isNotEmpty
+    ? objects.map((item) => fromMap(item)).toList()
+    : [];
+
+    return objectList;
+  }
 
 }

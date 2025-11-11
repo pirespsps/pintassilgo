@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:pintassilgo/components/field.dart';
 import 'package:pintassilgo/main.dart';
 import 'package:pintassilgo/models/Folder/folder.dart';
@@ -19,6 +20,7 @@ class _NovaPasta extends State<NovaPasta> {
 
   @override
   void dispose() {
+    super.dispose();
     _nomeController.dispose();
   }
 
@@ -65,9 +67,14 @@ class _NovaPasta extends State<NovaPasta> {
                     child: Text("cancelar"),
                   ),
                   FilledButton(
-                    onPressed: () {
+                    onPressed: () async {
+
+                      final storage = FlutterSecureStorage();
+
+                      String? id = await storage.read(key: "user");
+
                       Folder folder = Folder(name: _nomeController.text);
-                      folder.idUser = widget.user!.id; //trocar
+                      folder.idUser = int.parse(id!); //trocar
 
                       FolderDAO folderDAO = FolderDAO();
                       folderDAO.add(folder);

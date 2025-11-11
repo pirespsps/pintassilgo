@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:pintassilgo/components/field.dart';
 import 'package:pintassilgo/main.dart';
 import 'package:pintassilgo/models/Folder/folder.dart';
@@ -9,6 +10,20 @@ class NovaImagem extends StatefulWidget {
 
   @override
   State<NovaImagem> createState() => _NovaImagemState();
+
+  Future<String?> getUserId() async {
+    final FlutterSecureStorage storage = FlutterSecureStorage();
+    return await storage.read(key: "user");
+  }
+
+  Future<List<Folder>> getFolders() async {
+    final FolderDAO folderDAO = FolderDAO();
+    final id = await getUserId();
+    if (id == null) {
+      return [];
+    }
+    return await folderDAO.foldersByUser(int.parse(id));
+  }
 }
 
 class _NovaImagemState extends State<NovaImagem> {
@@ -17,19 +32,21 @@ class _NovaImagemState extends State<NovaImagem> {
   final TextEditingController _notaController = TextEditingController();
   final TextEditingController _linksController = TextEditingController();
 
-  final List<String> _folders = ["Ola", "dasd"]; //mudar para objeto folder
-  String? _selectedItem;
+  Future<List<Folder>> get _folders => widget.getFolders();
+
+  Folder? _selectedItem;
 
   @override
-  Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
-
-    @override
-  void dispose(){
+  void dispose() {
+    super.dispose();
     _tituloController.dispose();
     _notaController.dispose();
     _linksController.dispose();
   }
+
+  @override
+  Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
 
     return Scaffold(
       body: Container(
@@ -52,65 +69,7 @@ class _NovaImagemState extends State<NovaImagem> {
                   //image: DecorationImage(image: Image.file())
                 ),
               ),
-
-              GestureDetector(
-                child: Container(
-                  height: 250,
-                  width: size.width - 50,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(3),
-                    color: CINZA,
-                  ),
-                ),
-                onTap: () {
-                  showModalBottomSheet<void>(
-                    context: context,
-                    builder: (BuildContext context) {
-                      return Container(
-                        height: 200,
-                        color: MARROM,
-                        child: Center(
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            mainAxisSize: MainAxisSize.min,
-                            children: <Widget>[
-                              Padding(
-                                padding: const EdgeInsets.only(bottom: 30.0),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                  children: [
-                                    Column(
-                                      children: [
-                                        IconButton(
-                                        icon: Icon(Icons.camera_alt_outlined),iconSize: 50,
-                                        onPressed: (){
-                                        },
-                                      ),
-                                      Text("Tirar foto")
-                                      ],
-                                    ),
-                                    Column(
-                                      children: [
-                                        IconButton(
-                                        icon: Icon(Icons.file_open_outlined),iconSize: 50,
-                                        onPressed: (){
-                                          
-                                        },
-                                      ),
-                                      Text("Escolher arquivo")
-                                      ],
-                                    )
-                                  ],
-                                ),
-                              )
-                            ],
-                          ),
-                        ),
-                      );
-                    },
-                  );
-                },
-              ),
+              imageField(context, size),
               Form(
                 key: _formkey,
                 child: Column(
@@ -145,38 +104,43 @@ class _NovaImagemState extends State<NovaImagem> {
                       ),
                       child: Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 3.0),
-                        child: DropdownButton(
-                          dropdownColor: CINZA,
-                          style: TextStyle(color: MARROM),
-                          menuWidth: size.width - 10,
-                          icon: Padding(
-                            padding: EdgeInsetsGeometry.only(
-                              left: size.width - 140,
-                              right: 10,
-                            ),
-                            child: Icon(
-                              Icons.arrow_drop_down,
-                              color: MARROM,
-                              size: 40,
-                            ),
-                          ),
+                        child: FutureBuilder(
+                          future: _folders, // Future<List<Folder>>
+                          builder: (context, snapshot) {
+                            if (snapshot.data!.isEmpty) {
+                              return const Text('nenhuma pasta criada');
+                            }
+                            
+                            final folders = snapshot.data!;
 
-                          value: _selectedItem,
-                          items: _folders.map<DropdownMenuItem<String>>((
-                            //DropDownMenuItem<Folder>
-                            String item,
-                          ) {
-                            //mudar os tipos para folder
-                            return DropdownMenuItem<String>(
-                              //dropdownMenuItem<Folder>
-                              value: item, //folder.id
-                              child: Text(item), //folder.name
+                            return DropdownButton<Folder>(
+                              dropdownColor: CINZA,
+                              style: TextStyle(color: MARROM),
+                              menuWidth: size.width - 10,
+                              icon: Padding(
+                                padding: EdgeInsets.only(
+                                  left: size.width - 140,
+                                  right: 10,
+                                ),
+                                child: Icon(
+                                  Icons.arrow_drop_down,
+                                  color: MARROM,
+                                  size: 40,
+                                ),
+                              ),
+                              value: _selectedItem,
+                              items: folders.map((folder) {
+                                return DropdownMenuItem<Folder>(
+                                  value: folder,
+                                  child: Text(folder.name),
+                                );
+                              }).toList(),
+                              onChanged: (Folder? item) {
+                                setState(() {
+                                  _selectedItem = item;
+                                });
+                              },
                             );
-                          }).toList(),
-                          onChanged: (String? item) {
-                            setState(() {
-                              _selectedItem = item;
-                            });
                           },
                         ),
                       ),
@@ -198,4 +162,65 @@ class _NovaImagemState extends State<NovaImagem> {
       ),
     );
   }
+}
+
+imageField(context, size){
+  return GestureDetector(
+                child: Container(
+                  height: 250,
+                  width: size.width - 50,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(3),
+                    color: CINZA,
+                  ),
+                ),
+                onTap: () {
+                  showModalBottomSheet<void>(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return Container(
+                        height: 200,
+                        color: MARROM,
+                        child: Center(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            mainAxisSize: MainAxisSize.min,
+                            children: <Widget>[
+                              Padding(
+                                padding: const EdgeInsets.only(bottom: 30.0),
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceEvenly,
+                                  children: [
+                                    Column(
+                                      children: [
+                                        IconButton(
+                                          icon: Icon(Icons.camera_alt_outlined),
+                                          iconSize: 50,
+                                          onPressed: () {},
+                                        ),
+                                        Text("Tirar foto"),
+                                      ],
+                                    ),
+                                    Column(
+                                      children: [
+                                        IconButton(
+                                          icon: Icon(Icons.file_open_outlined),
+                                          iconSize: 50,
+                                          onPressed: () {},
+                                        ),
+                                        Text("Escolher arquivo"),
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      );
+                    },
+                  );
+                },
+);
 }
