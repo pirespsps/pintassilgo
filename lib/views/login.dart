@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:pintassilgo/components/field.dart';
 import 'package:pintassilgo/models/User/user.dart';
+import 'package:pintassilgo/models/User/userDAO.dart';
 import 'package:pintassilgo/views/registro.dart';
 
 class Login extends StatefulWidget {
@@ -107,6 +109,17 @@ class _LoginState extends State<Login> {
                           ),
                           onPressed: () async {
                             //entrar no site
+
+                            User user = User(
+                              name: _nomeController.text,
+                              password: _senhaController.text //criptografia
+                            );
+                            
+                            UserDAO userDAO = UserDAO();
+                            int id = await userDAO.add(user);
+
+                            final storage = FlutterSecureStorage();
+                            storage.write(key: "user", value: id.toString());
                           },
                         ),
                         TextButton(

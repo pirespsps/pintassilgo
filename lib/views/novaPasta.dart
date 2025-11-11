@@ -69,8 +69,8 @@ class _NovaPasta extends State<NovaPasta> {
                       Folder folder = Folder(name: _nomeController.text);
                       folder.idUser = widget.user!.id; //trocar
 
-                      FolderDAO folderdao = FolderDAO();
-                      folderdao.add(folder);
+                      FolderDAO folderDAO = FolderDAO();
+                      folderDAO.add(folder);
                       Navigator.pop(context);
                     },
 

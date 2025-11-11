@@ -8,7 +8,6 @@ class UserDAO extends GenericDAO<User> {
 
   @override
   User fromMap(item){
-    User.fromMap(item);
     return User.fromMap(item);
   }
 
