@@ -46,13 +46,63 @@ class _NovaImagemState extends State<NovaImagem> {
                 ),
               ),
 
-              Container(
-                height: 250,
-                width: size.width-50,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(3),
-                  color: CINZA,
+              GestureDetector(
+                child: Container(
+                  height: 250,
+                  width: size.width - 50,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(3),
+                    color: CINZA,
+                  ),
                 ),
+                onTap: () {
+                  showModalBottomSheet<void>(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return Container(
+                        height: 200,
+                        color: MARROM,
+                        child: Center(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            mainAxisSize: MainAxisSize.min,
+                            children: <Widget>[
+                              Padding(
+                                padding: const EdgeInsets.only(bottom: 30.0),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                  children: [
+                                    Column(
+                                      children: [
+                                        IconButton(
+                                        icon: Icon(Icons.camera_alt_outlined),iconSize: 50,
+                                        onPressed: (){
+                                        },
+                                      ),
+                                      Text("Tirar foto")
+                                      ],
+                                    ),
+                                    Column(
+                                      children: [
+                                        IconButton(
+                                        icon: Icon(Icons.file_open_outlined),iconSize: 50,
+                                        onPressed: (){
+                                          
+                                        },
+                                      ),
+                                      Text("Escolher arquivo")
+                                      ],
+                                    )
+                                  ],
+                                ),
+                              )
+                            ],
+                          ),
+                        ),
+                      );
+                    },
+                  );
+                },
               ),
               Form(
                 key: _formkey,
@@ -106,8 +156,9 @@ class _NovaImagemState extends State<NovaImagem> {
 
                           value: _selectedItem,
                           items: _folders.map<DropdownMenuItem<String>>((
-                            //DropDownMenuItem<Folder> 
-                            String item,) {
+                            //DropDownMenuItem<Folder>
+                            String item,
+                          ) {
                             //mudar os tipos para folder
                             return DropdownMenuItem<String>(
                               //dropdownMenuItem<Folder>
