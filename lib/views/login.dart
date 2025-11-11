@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pintassilgo/components/field.dart';
 import 'package:pintassilgo/models/User/user.dart';
+import 'package:pintassilgo/views/registro.dart';
 
 class Login extends StatefulWidget {
   final User? user;
@@ -103,7 +104,8 @@ class _LoginState extends State<Login> {
                     style: TextStyle(fontSize: 15),
                   ),
                   onPressed: () async {
-                    //tela de resistro
+                    Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => const Registro(),),);
                   },
                 ),
               )
