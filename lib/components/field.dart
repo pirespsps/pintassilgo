@@ -6,11 +6,13 @@ class Field extends StatefulWidget {
   final String text;
   final double? height;
   final double? width;
+  final Function? validator;
 
   const Field({
     super.key,
     required this.fieldController,
     required this.text,
+    this.validator,
     this.height,
     this.width,
   });
@@ -51,7 +53,9 @@ class _FieldFormState extends State<Field> {
                 style: TextStyle(color: Colors.black),
                 cursorColor: Colors.black,
                 cursorHeight: 15,
-                validator: (value){
+                validator: widget.validator != null
+                ? widget.validator!() 
+                : (value){
                   if(value == null || value.isEmpty){
                     return "Entre com um texto válido";
                   }
