@@ -1,9 +1,18 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:path/path.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:pintassilgo/components/field.dart';
 import 'package:pintassilgo/main.dart';
 import 'package:pintassilgo/models/Folder/folder.dart';
 import 'package:pintassilgo/models/Folder/folderDAO.dart';
+import 'package:pintassilgo/models/Image/image.dart' as image_model;
+import 'package:pintassilgo/models/Image/imageDAO.dart';
+import 'package:pintassilgo/models/Note/note.dart';
+import 'package:pintassilgo/models/Note/noteDAO.dart';
 
 class NovaImagem extends StatefulWidget {
   const NovaImagem({super.key});
@@ -34,8 +43,9 @@ class _NovaImagemState extends State<NovaImagem> {
   final TextEditingController _linksController = TextEditingController();
 
   late Future<List<Folder>> _foldersFuture;
+  Folder? _selectedFolder;
 
-  Folder? _selectedItem;
+  XFile? _image;
 
   @override
   void initState() {
@@ -85,7 +95,7 @@ class _NovaImagemState extends State<NovaImagem> {
                     ),
 
                     Field(
-                      text: "nota",
+                      text: "titulo da nota",
                       fieldController: _notaController,
                       width: size.width - 50,
                       height: 65,
@@ -109,7 +119,6 @@ class _NovaImagemState extends State<NovaImagem> {
                         child: FutureBuilder<List<Folder>>(
                           future: _foldersFuture,
                           builder: (context, snapshot) {
-
                             if (snapshot.hasError) {
                               return Padding(
                                 padding: const EdgeInsets.all(8),
@@ -145,7 +154,7 @@ class _NovaImagemState extends State<NovaImagem> {
                                   size: 40,
                                 ),
                               ),
-                              value: _selectedItem,
+                              value: _selectedFolder,
                               items: folders.map((folder) {
                                 return DropdownMenuItem<Folder>(
                                   value: folder,
@@ -154,7 +163,7 @@ class _NovaImagemState extends State<NovaImagem> {
                               }).toList(),
                               onChanged: (Folder? item) {
                                 setState(() {
-                                  _selectedItem = item;
+                                  _selectedFolder = item;
                                 });
                               },
                             );
@@ -169,10 +178,64 @@ class _NovaImagemState extends State<NovaImagem> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  FilledButton(onPressed: () {
-                    Navigator.pop(context);
-                  }, child: Text("cancelar")),
-                  FilledButton(onPressed: () {}, child: Text("criar")),
+                  FilledButton(
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                    child: Text("cancelar"),
+                  ),
+                  FilledButton(
+                    onPressed: () async {
+                      if (_image == null) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(content: Text('Selecione uma imagem')),
+                        );
+                        return;
+                      }
+
+                      if (_tituloController.text.isEmpty ||_notaController.text.isEmpty) {
+                        return;
+                      }
+
+                      image_model.Image image = image_model.Image(
+                        title: _tituloController.text,
+                        date: DateTime.now(),
+                        idFolder: _selectedFolder!.id,
+                      );
+
+                      ImageDAO imagedao = ImageDAO();
+                      int id = await imagedao.add(image);
+
+                      Directory documentsDirectory =
+                          await getApplicationDocumentsDirectory();
+                      Directory imagesDirectory = Directory(
+                        join(documentsDirectory.path, "images"),
+                      );
+
+                      if (!await imagesDirectory.exists()) {
+                        await imagesDirectory.create();
+                      }
+
+                      File file = File(
+                        join(
+                          documentsDirectory.path,
+                          "images/",
+                          id.toString(),
+                          _image!.mimeType,
+                        ),
+                      );
+
+                      await file.writeAsBytes(await _image!.readAsBytes());
+
+                      NoteDAO noteDAO = NoteDAO();
+                      Note note = Note(title: _notaController.text, idImage: id);
+
+                      noteDAO.add(note);
+
+                      Navigator.pop(context);
+                    },
+                    child: Text("criar"),
+                  ),
                 ],
               ),
             ],
@@ -181,64 +244,89 @@ class _NovaImagemState extends State<NovaImagem> {
       ),
     );
   }
-}
 
-imageField(context, size) {
-  return GestureDetector(
-    child: Container(
-      height: 250,
-      width: size.width - 50,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(3),
-        color: CINZA,
+  imageField(context, size) {
+    return GestureDetector(
+      child: Container(
+        height: 250,
+        width: size.width - 50,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(3),
+          color: CINZA,
+          image: _image != null
+              ? DecorationImage(
+                  image: FileImage(File(_image!.path)),
+                  fit: BoxFit.fill,
+                )
+              : null,
+        ),
       ),
-    ),
-    onTap: () {
-      showModalBottomSheet<void>(
-        context: context,
-        builder: (BuildContext context) {
-          return Container(
-            height: 200,
-            color: MARROM,
-            child: Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                mainAxisSize: MainAxisSize.min,
-                children: <Widget>[
-                  Padding(
-                    padding: const EdgeInsets.only(bottom: 30.0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        Column(
-                          children: [
-                            IconButton(
-                              icon: Icon(Icons.camera_alt_outlined),
-                              iconSize: 50,
-                              onPressed: () {},
-                            ),
-                            Text("Tirar foto"),
-                          ],
-                        ),
-                        Column(
-                          children: [
-                            IconButton(
-                              icon: Icon(Icons.file_open_outlined),
-                              iconSize: 50,
-                              onPressed: () {},
-                            ),
-                            Text("Escolher arquivo"),
-                          ],
-                        ),
-                      ],
+      onTap: () {
+        showModalBottomSheet<void>(
+          context: context,
+          builder: (BuildContext context) {
+            return Container(
+              height: 200,
+              color: MARROM,
+              child: Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  mainAxisSize: MainAxisSize.min,
+                  children: <Widget>[
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 30.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          Column(
+                            children: [
+                              IconButton(
+                                icon: Icon(Icons.camera_alt_outlined),
+                                iconSize: 50,
+                                onPressed: () async {
+                                  final ImagePicker picker = ImagePicker();
+                                  // Capture a photo.
+                                  final XFile? photo = await picker.pickImage(
+                                    source: ImageSource.camera,
+                                  );
+
+                                  setState(() {
+                                    _image = photo;
+                                  });
+                                },
+                              ),
+                              Text("Tirar foto"),
+                            ],
+                          ),
+                          Column(
+                            children: [
+                              IconButton(
+                                icon: Icon(Icons.file_open_outlined),
+                                iconSize: 50,
+                                onPressed: () async {
+                                  final ImagePicker picker = ImagePicker();
+                                  // Pick an image.
+                                  final XFile? image = await picker.pickImage(
+                                    source: ImageSource.gallery,
+                                  );
+                                  setState(() {
+                                    _image = image;
+                                  });
+                                },
+                              ),
+                              Text("Escolher arquivo"),
+                            ],
+                          ),
+                        ],
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
-            ),
-          );
-        },
-      );
-    },
-  );
+            );
+          },
+        );
+      },
+    );
+  }
 }
