@@ -58,7 +58,7 @@ class _RegistroState extends State<Registro> {
                 child: Form(
                   key: _formKey,
                   child: Column(
-                    spacing: 15,
+                    spacing: 20,
                     children: [
                       SizedBox(height: size.height * 2 / 100),
                       Text(

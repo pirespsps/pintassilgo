@@ -31,7 +31,7 @@ class _FieldFormState extends State<Field> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: widget.height ?? 50,
+      width: widget.width ?? 300,
       decoration: BoxDecoration(
         color: CINZA,
         borderRadius: BorderRadius.circular(7),

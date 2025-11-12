@@ -57,6 +57,8 @@ class _LoginState extends State<Login> {
               child: Form(
                 key: _formKey,
                 child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   spacing: 15,
                   children: [
                     SizedBox(
