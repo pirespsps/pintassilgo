@@ -71,7 +71,7 @@ class _RegistroState extends State<Registro> {
                       ),
                       SizedBox(height: size.height * 2 / 100),
                       Field(
-                        text: "usuario",
+                        text: "usuário",
                         fieldController: _nomeController,
                         width: size.width - 50,
                         height: 65,

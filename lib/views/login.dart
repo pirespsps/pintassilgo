@@ -67,7 +67,7 @@ class _LoginState extends State<Login> {
                       height: size.width * 7/100,
                     ),
                     Field(
-                      text: "usuario",
+                      text: "usuário",
                       fieldController: _nomeController,
                       width: size.width - 50,
                       height: 70,
