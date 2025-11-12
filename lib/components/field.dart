@@ -7,6 +7,9 @@ class Field extends StatefulWidget {
   final double? height;
   final double? width;
   final String? Function(String?)? validator;
+  final String? Function(String?)? onSaved;
+  final Widget? suffixIcon;
+  final bool? obscureText;
 
   const Field({
     super.key,
@@ -15,6 +18,9 @@ class Field extends StatefulWidget {
     this.validator,
     this.height,
     this.width,
+    this.onSaved,
+    this.suffixIcon,
+    this.obscureText,
   });
 
   @override
@@ -60,11 +66,18 @@ class _FieldFormState extends State<Field> {
                   }
                   return null;
                 },
+                onSaved: widget.onSaved ??
+                (value){},
                 
                 decoration: InputDecoration(
                   enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: CINZA_ESCURO)),
                   focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: CINZA_ESCURO)),
+                  suffixIcon: widget.suffixIcon ??
+                  SizedBox(width: 0, height: 0,),
                 ),
+
+                obscureText: widget.obscureText ??
+                false,
               ),
             ),
           ),

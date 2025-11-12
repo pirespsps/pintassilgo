@@ -92,6 +92,8 @@ class _RegistroState extends State<Registro> {
                         validator: (value) {
                           if (value == null || value.isEmpty) {
                             return 'este campo é obrigatório';
+                          }else if(value.length < 6){
+                            return 'a senha deve ter no mínimo 6 caracteres';
                           } else {
                             return null;
                           }
