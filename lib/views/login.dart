@@ -70,7 +70,7 @@ class _LoginState extends State<Login> {
                       text: "usuário",
                       fieldController: _nomeController,
                       width: size.width - 50,
-                      height: size.height * 7 / 100,
+                      height: 50,
                       validator: (value){
                         if(value == null || value.trim().isEmpty ){
                           return 'este campo é obrigatório';
@@ -84,7 +84,7 @@ class _LoginState extends State<Login> {
                       text: "senha",
                       fieldController: _senhaController,
                       width: size.width - 50,
-                      height: size.height * 7 / 100,
+                      height: 50,
                       validator: (value){
                         if(value == null || value.trim().isEmpty ){
                           return 'este campo é obrigatório';
@@ -95,16 +95,19 @@ class _LoginState extends State<Login> {
                         }
                       },
                       onSaved: (value) => _senha = value.toString(),
-                      suffixIcon: IconButton(
-                        icon: Icon(
-                          _visibilidadeSenha ? Icons.visibility_off : Icons.visibility,
-                          color: Theme.of(context).colorScheme.onPrimary) ,
-                        onPressed: (){
-                          setState(() {
-                            _visibilidadeSenha = !_visibilidadeSenha;
-                          });
-                        }, 
-                        ),
+                      suffixIcon: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: IconButton(
+                          icon: Icon(
+                            _visibilidadeSenha ? Icons.visibility_off : Icons.visibility,
+                            color: Theme.of(context).colorScheme.onPrimary) ,
+                          onPressed: (){
+                            setState(() {
+                              _visibilidadeSenha = !_visibilidadeSenha;
+                            });
+                          }, 
+                          ),
+                      ),
                       obscureText: !_visibilidadeSenha,
                     ),
                     SizedBox(
