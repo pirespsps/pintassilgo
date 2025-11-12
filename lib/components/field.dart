@@ -52,7 +52,7 @@ class _FieldFormState extends State<Field> {
           SizedBox(
             height: widget.height == null? (widget.height! * 0.6) : 30,
             child: Padding(
-              padding: const EdgeInsets.all(5.0),
+              padding: const EdgeInsets.only(right: 5, left: 5 ,bottom: 5),
               child: TextFormField(
                 controller: widget.fieldController,
                 style: TextStyle(color: Colors.black),
@@ -69,8 +69,8 @@ class _FieldFormState extends State<Field> {
                 (value){},
                 
                 decoration: InputDecoration(
-                  enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: CINZA_ESCURO)),
-                  focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: CINZA_ESCURO)),
+                  enabledBorder: null,
+                  focusedBorder: null,
                   suffixIcon: widget.suffixIcon ??
                   SizedBox(width: 0, height: 0,),
                 ),
@@ -80,6 +80,9 @@ class _FieldFormState extends State<Field> {
               ),
             ),
           ),
+          SizedBox(
+            height: 10,
+          )
         ],
       ),
     );
