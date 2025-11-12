@@ -142,7 +142,7 @@ class _RegistroState extends State<Registro> {
                             });
                           }, 
                           ),
-                        obscureText: !_visibilidadeSenha,
+                        obscureText: !_visibilidadeConfirmarSenha,
                       ),
         
                       SizedBox(height: size.height * 2 / 100),
