@@ -17,6 +17,9 @@ class Registro extends StatefulWidget {
 
 class _RegistroState extends State<Registro> {
   final _formKey = GlobalKey<FormState>();
+  String _user = '', _senha = '', _confirmarSenha = '';
+  bool _visibilidadeSenha = false;
+  bool _visibilidadeConfirmarSenha = false;
   final TextEditingController _nomeController = TextEditingController();
   final TextEditingController _senhaController = TextEditingController();
   final TextEditingController _confirmarSenhaController =
@@ -82,6 +85,7 @@ class _RegistroState extends State<Registro> {
                             return null;
                           }
                         },
+                        onSaved: (value) => _user = value.toString(),
                       ),
                       Field(
                         text: "senha",
@@ -98,6 +102,18 @@ class _RegistroState extends State<Registro> {
                             return null;
                           }
                         },
+                        onSaved: (value) => _senha = value.toString(),
+                        suffixIcon: IconButton(
+                          icon: Icon(
+                            _visibilidadeSenha ? Icons.visibility_off : Icons.visibility,
+                            color: Theme.of(context).colorScheme.onPrimary) ,
+                          onPressed: (){
+                            setState(() {
+                              _visibilidadeSenha = !_visibilidadeSenha;
+                            });
+                          }, 
+                          ),
+                        obscureText: !_visibilidadeSenha,
                       ),
         
                       Field(
@@ -109,13 +125,24 @@ class _RegistroState extends State<Registro> {
                         validator: (value) {
                           if (value == null || value.isEmpty) {
                             return 'este campo é obrigatório';
-                            // }else if(value != VALUE DO CAMPO DAS SENHAS){
-                            //   // compara com a senha
-                            //   return 'senha incorreta';
+                            }else if(value != _senha){
+                              return 'este campo não corresponde ao campo de senha';
                           } else {
                             return null;
                           }
                         },
+                        onSaved: (value) => _confirmarSenha = value.toString(),
+                        suffixIcon: IconButton(
+                          icon: Icon(
+                            _visibilidadeConfirmarSenha ? Icons.visibility_off : Icons.visibility,
+                            color: Theme.of(context).colorScheme.onPrimary) ,
+                          onPressed: (){
+                            setState(() {
+                              _visibilidadeConfirmarSenha = !_visibilidadeConfirmarSenha;
+                            });
+                          }, 
+                          ),
+                        obscureText: !_visibilidadeSenha,
                       ),
         
                       SizedBox(height: size.height * 2 / 100),

@@ -124,6 +124,9 @@ class _LoginState extends State<Login> {
                           onPressed: () async {
                             //entrar no site
 
+                          if (_formKey.currentState!.validate()){
+                            _formKey.currentState!.save();
+                          }
                             User user = User(
                               name: _nomeController.text,
                               password: _senhaController.text //criptografia
