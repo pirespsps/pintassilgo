@@ -70,7 +70,7 @@ class _LoginState extends State<Login> {
                       text: "usuário",
                       fieldController: _nomeController,
                       width: size.width - 50,
-                      height: 70,
+                      height: 60,
                       validator: (value){
                         if(value == null || value.trim().isEmpty ){
                           return 'este campo é obrigatório';
@@ -83,9 +83,8 @@ class _LoginState extends State<Login> {
                     Field(
                       text: "senha",
                       fieldController: _senhaController,
-                      
                       width: size.width - 50,
-                      height: 70,
+                      height: 60,
                       validator: (value){
                         if(value == null || value.trim().isEmpty ){
                           return 'este campo é obrigatório';
@@ -123,7 +122,6 @@ class _LoginState extends State<Login> {
                           ),
                           onPressed: () async {
                             //entrar no site
-
                           if (_formKey.currentState!.validate()){
                             _formKey.currentState!.save();
                           }
@@ -149,17 +147,20 @@ class _LoginState extends State<Login> {
                               );                          
                               },
                         ),
-                        TextButton(
-                          child: Text("criar uma conta",
-                            style: TextStyle(
-                              fontSize: 15,
-                              color: Theme.of(context).colorScheme.onPrimary
+                        Padding(
+                          padding: const EdgeInsets.only(bottom: 5),
+                          child: TextButton(
+                            child: Text("criar uma conta",
+                              style: TextStyle(
+                                fontSize: 15,
+                                color: Theme.of(context).colorScheme.onPrimary
+                              ),
                             ),
+                            onPressed: () async {
+                              Navigator.push(context,
+                              MaterialPageRoute(builder: (context) => Registro(),),);
+                            },
                           ),
-                          onPressed: () async {
-                            Navigator.push(context,
-                            MaterialPageRoute(builder: (context) => Registro(),),);
-                          },
                         ),
                       ],
                     )

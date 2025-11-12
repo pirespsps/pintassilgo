@@ -76,7 +76,7 @@ class _RegistroState extends State<Registro> {
                         width: size.width - 50,
                         height: 65,
                         validator: (value) {
-                          if (value == null || value.isEmpty) {
+                          if (value == null || value.trim().isEmpty) {
                             return 'este campo é obrigatório';
                             // }else if(value == TODOS OS USUARIO CADASTRADOS){
                             //   // usuario ja existe
@@ -94,7 +94,7 @@ class _RegistroState extends State<Registro> {
                         width: size.width - 50,
                         height: 65,
                         validator: (value) {
-                          if (value == null || value.isEmpty) {
+                          if (value == null || value.trim().isEmpty) {
                             return 'este campo é obrigatório';
                           }else if(value.length < 6){
                             return 'a senha deve ter no mínimo 6 caracteres';
@@ -123,7 +123,7 @@ class _RegistroState extends State<Registro> {
                         width: size.width - 50,
                         height: 65,
                         validator: (value) {
-                          if (value == null || value.isEmpty) {
+                          if (value == null || value.trim().isEmpty) {
                             return 'este campo é obrigatório';
                             }else if(value != _senha){
                               return 'este campo não corresponde ao campo de senha';
@@ -161,6 +161,10 @@ class _RegistroState extends State<Registro> {
                             ),
                             onPressed: () async {
                               //entrar no site
+                              if (_formKey.currentState!.validate()){
+                                _formKey.currentState!.save();
+                              }
+
                               User user = User(
                                 name: _nomeController.text,
                                 password: _senhaController.text, //criptografia
@@ -179,20 +183,23 @@ class _RegistroState extends State<Registro> {
                               );
                             },
                           ),
-                          TextButton(
-                            child: Text(
-                              "entrar (já tenho uma conta)",
-                              style: TextStyle(
-                                fontSize: 15,
-                                color: Theme.of(context).colorScheme.onPrimary,
+                          Padding(
+                            padding: const EdgeInsets.only(bottom: 5),
+                            child: TextButton(
+                              child: Text(
+                                "entrar (já tenho uma conta)",
+                                style: TextStyle(
+                                  fontSize: 15,
+                                  color: Theme.of(context).colorScheme.onPrimary,
+                                ),
                               ),
+                              onPressed: () async {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(builder: (context) => const Login()),
+                                );
+                              },
                             ),
-                            onPressed: () async {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(builder: (context) => const Login()),
-                              );
-                            },
                           ),
                         ],
                       ),
