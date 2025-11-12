@@ -140,7 +140,24 @@ class _LoginState extends State<Login> {
                             User? userFinal = await userDAO.getByNameAndPassword(_nomeController.text, _senhaController.text);
         
                               if(userFinal == null){
-                                //nome ou senha incorretos
+                                AlertDialog(
+                                  title: const Text('USUARIO OU SENHA INVÁLIDOS'),
+                                  content: const SingleChildScrollView(
+                                    child: ListBody(
+                                      children: <Widget>[
+                                        Text('tente novamente'),
+                                      ],
+                                    ),
+                                  ),
+                                  actions: <Widget>[
+                                    TextButton(
+                                      child: const Text('continuar'),
+                                      onPressed: () {
+                                        Navigator.of(context).pop();
+                                      },
+                                    ),
+                                  ],
+                                );
                               }
 
                             final storage = FlutterSecureStorage();
