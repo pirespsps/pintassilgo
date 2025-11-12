@@ -28,7 +28,6 @@ class NovaImagem extends StatefulWidget {
   Future<List<Folder>> getFolders() async {
     final FolderDAO folderDAO = FolderDAO();
     final id = await getUserId();
-    print('Carregando pastas...');
     if (id == null) {
       return [];
     }
@@ -106,13 +105,12 @@ class _NovaImagemState extends State<NovaImagem> {
                       fieldController: _linksController,
                       width: size.width - 50,
                       height: 65,
-                      validator: (value){
-
-                        if(value == null || value.isEmpty){
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
                           return "Insira um valor, campo obrigatório";
                         }
 
-                        if(!value.contains(".") || !value.contains("/")){
+                        if (!value.contains(".") || !value.contains("/")) {
                           return "Insira um link válido";
                         }
                       },
@@ -144,7 +142,7 @@ class _NovaImagemState extends State<NovaImagem> {
                               return Padding(
                                 padding: EdgeInsets.all(8),
                                 child: Text(
-                                  'Erro ao carregar pastas: ${snapshot.error}',
+                                  'Pastas vazias',
                                 ),
                               );
                             }
@@ -195,53 +193,7 @@ class _NovaImagemState extends State<NovaImagem> {
                     child: Text("cancelar"),
                   ),
                   FilledButton(
-                    onPressed: () async {
-                      if (_image == null) {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(content: Text('Selecione uma imagem')),
-                        );
-                        return;
-                      }
-
-                      if (_tituloController.text.isEmpty ||_notaController.text.isEmpty) {
-                        return;
-                      }
-
-                      image_model.Image image = image_model.Image(
-                        title: _tituloController.text,
-                        date: DateTime.now(),
-                        idFolder: _selectedFolder!.id,
-                      );
-
-                      ImageDAO imagedao = ImageDAO();
-                      int id = await imagedao.add(image);
-
-                      Directory documentsDirectory = await getApplicationDocumentsDirectory();
-                      Directory imagesDirectory = Directory( join(documentsDirectory.path, "images"),);
-
-                      if (!await imagesDirectory.exists()) {
-                        await imagesDirectory.create();
-                      }
-
-                      File file = File(
-                        join(
-                          documentsDirectory.path,
-                          "images/",
-                          id.toString(),
-                          ".",
-                          _image!.mimeType,
-                        ),
-                      );
-
-                      await file.writeAsBytes(await _image!.readAsBytes());
-
-                      NoteDAO noteDAO = NoteDAO();
-                      Note note = Note(title: _notaController.text, idImage: id);
-
-                      noteDAO.add(note);
-
-                      Navigator.pop(context);
-                    },
+                    onPressed: () => {sendForm(context)},
                     child: Text("criar"),
                   ),
                 ],
@@ -251,6 +203,56 @@ class _NovaImagemState extends State<NovaImagem> {
         ),
       ),
     );
+  }
+
+  sendForm(context) async {
+    if (_image == null) {
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar( SnackBar(content: Text('Selecione uma imagem')));
+      return;
+    }
+
+    if (_tituloController.text.isEmpty || _notaController.text.isEmpty) {
+      return;
+    }
+
+    image_model.Image image = image_model.Image(
+      title: _tituloController.text,
+      date: DateTime.now(),
+      idFolder: _selectedFolder!.id,
+    );
+
+    ImageDAO imagedao = ImageDAO();
+    int id = await imagedao.add(image);
+
+    Directory documentsDirectory = await getApplicationDocumentsDirectory();
+    Directory imagesDirectory = Directory(
+      join(documentsDirectory.path, "images"),
+    );
+
+    if (!await imagesDirectory.exists()) {
+      await imagesDirectory.create();
+    }
+
+    File file = File(
+      join(
+        documentsDirectory.path,
+        "images/",
+        id.toString(),
+        ".",
+        _image!.mimeType,
+      ),
+    );
+
+    await file.writeAsBytes(await _image!.readAsBytes());
+
+    NoteDAO noteDAO = NoteDAO();
+    Note note = Note(title: _notaController.text, idImage: id);
+
+    noteDAO.add(note);
+
+    Navigator.pop(context);
   }
 
   imageField(context, size) {
