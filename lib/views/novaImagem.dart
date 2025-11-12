@@ -106,6 +106,16 @@ class _NovaImagemState extends State<NovaImagem> {
                       fieldController: _linksController,
                       width: size.width - 50,
                       height: 65,
+                      validator: (value){
+
+                        if(value == null || value.isEmpty){
+                          return "Insira um valor, campo obrigatório";
+                        }
+
+                        if(!value.contains(".") || !value.contains("/")){
+                          return "Insira um link válido";
+                        }
+                      },
                     ),
 
                     Container(
@@ -206,11 +216,8 @@ class _NovaImagemState extends State<NovaImagem> {
                       ImageDAO imagedao = ImageDAO();
                       int id = await imagedao.add(image);
 
-                      Directory documentsDirectory =
-                          await getApplicationDocumentsDirectory();
-                      Directory imagesDirectory = Directory(
-                        join(documentsDirectory.path, "images"),
-                      );
+                      Directory documentsDirectory = await getApplicationDocumentsDirectory();
+                      Directory imagesDirectory = Directory( join(documentsDirectory.path, "images"),);
 
                       if (!await imagesDirectory.exists()) {
                         await imagesDirectory.create();
@@ -221,6 +228,7 @@ class _NovaImagemState extends State<NovaImagem> {
                           documentsDirectory.path,
                           "images/",
                           id.toString(),
+                          ".",
                           _image!.mimeType,
                         ),
                       );
