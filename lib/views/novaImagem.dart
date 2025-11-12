@@ -27,17 +27,21 @@ class NovaImagem extends StatefulWidget {
   }
 }
 
-
-
 class _NovaImagemState extends State<NovaImagem> {
   final _formkey = GlobalKey<FormState>();
   final TextEditingController _tituloController = TextEditingController();
   final TextEditingController _notaController = TextEditingController();
   final TextEditingController _linksController = TextEditingController();
 
-  Future<List<Folder>> get _folders => widget.getFolders();
+  late Future<List<Folder>> _foldersFuture;
 
   Folder? _selectedItem;
+
+  @override
+  void initState() {
+    super.initState();
+    _foldersFuture = widget.getFolders();
+  }
 
   @override
   void dispose() {
@@ -66,9 +70,7 @@ class _NovaImagemState extends State<NovaImagem> {
                 style: TextStyle(color: Colors.white),
                 textScaler: TextScaler.linear(3),
               ),
-              Container(
-                height: 20,
-              ),
+              Container(height: 20),
               imageField(context, size),
               Form(
                 key: _formkey,
@@ -105,18 +107,28 @@ class _NovaImagemState extends State<NovaImagem> {
                       child: Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 3.0),
                         child: FutureBuilder<List<Folder>>(
-                          future: _folders,
+                          future: _foldersFuture,
                           builder: (context, snapshot) {
 
-                            if(snapshot.hasError){
-                              print('Erro : ${snapshot.error}');
+                            if (snapshot.hasError) {
+                              return Padding(
+                                padding: const EdgeInsets.all(8),
+                                child: Text(
+                                  'Erro ao carregar pastas: ${snapshot.error}',
+                                ),
+                              );
                             }
 
-                            if (snapshot.data!.isEmpty) {
-                              return const Text('nenhuma pasta criada');
+                            final folders = snapshot.data ?? [];
+
+                            if (folders.isEmpty) {
+                              return Padding(
+                                padding: EdgeInsets.all(8),
+                                child: Text(
+                                  'Erro ao carregar pastas: ${snapshot.error}',
+                                ),
+                              );
                             }
-                            
-                            final folders = snapshot.data!;
 
                             return DropdownButton<Folder>(
                               dropdownColor: CINZA,
@@ -157,7 +169,9 @@ class _NovaImagemState extends State<NovaImagem> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  FilledButton(onPressed: () {}, child: Text("cancelar")),
+                  FilledButton(onPressed: () {
+                    Navigator.pop(context);
+                  }, child: Text("cancelar")),
                   FilledButton(onPressed: () {}, child: Text("criar")),
                 ],
               ),
@@ -169,63 +183,62 @@ class _NovaImagemState extends State<NovaImagem> {
   }
 }
 
-imageField(context, size){
+imageField(context, size) {
   return GestureDetector(
-                child: Container(
-                  height: 250,
-                  width: size.width - 50,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(3),
-                    color: CINZA,
-                  ),
-                ),
-                onTap: () {
-                  showModalBottomSheet<void>(
-                    context: context,
-                    builder: (BuildContext context) {
-                      return Container(
-                        height: 200,
-                        color: MARROM,
-                        child: Center(
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            mainAxisSize: MainAxisSize.min,
-                            children: <Widget>[
-                              Padding(
-                                padding: const EdgeInsets.only(bottom: 30.0),
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceEvenly,
-                                  children: [
-                                    Column(
-                                      children: [
-                                        IconButton(
-                                          icon: Icon(Icons.camera_alt_outlined),
-                                          iconSize: 50,
-                                          onPressed: () {},
-                                        ),
-                                        Text("Tirar foto"),
-                                      ],
-                                    ),
-                                    Column(
-                                      children: [
-                                        IconButton(
-                                          icon: Icon(Icons.file_open_outlined),
-                                          iconSize: 50,
-                                          onPressed: () {},
-                                        ),
-                                        Text("Escolher arquivo"),
-                                      ],
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ],
-                          ),
+    child: Container(
+      height: 250,
+      width: size.width - 50,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(3),
+        color: CINZA,
+      ),
+    ),
+    onTap: () {
+      showModalBottomSheet<void>(
+        context: context,
+        builder: (BuildContext context) {
+          return Container(
+            height: 200,
+            color: MARROM,
+            child: Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisSize: MainAxisSize.min,
+                children: <Widget>[
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 30.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        Column(
+                          children: [
+                            IconButton(
+                              icon: Icon(Icons.camera_alt_outlined),
+                              iconSize: 50,
+                              onPressed: () {},
+                            ),
+                            Text("Tirar foto"),
+                          ],
                         ),
-                      );
-                    },
-                  );
-                },
-);
+                        Column(
+                          children: [
+                            IconButton(
+                              icon: Icon(Icons.file_open_outlined),
+                              iconSize: 50,
+                              onPressed: () {},
+                            ),
+                            Text("Escolher arquivo"),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          );
+        },
+      );
+    },
+  );
 }
