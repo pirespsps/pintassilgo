@@ -74,7 +74,7 @@ class _RegistroState extends State<Registro> {
                         text: "usuário",
                         fieldController: _nomeController,
                         width: size.width - 50,
-                        height: 65,
+                        height: size.height * 5 / 100,
                         validator: (value) {
                           if (value == null || value.trim().isEmpty) {
                             return 'este campo é obrigatório';
@@ -92,7 +92,7 @@ class _RegistroState extends State<Registro> {
                         fieldController: _senhaController,
         
                         width: size.width - 50,
-                        height: 65,
+                        height: size.height * 5 / 100,
                         validator: (value) {
                           if (value == null || value.trim().isEmpty) {
                             return 'este campo é obrigatório';
@@ -121,7 +121,7 @@ class _RegistroState extends State<Registro> {
                         fieldController: _confirmarSenhaController,
         
                         width: size.width - 50,
-                        height: 65,
+                        height: size.height * 5 / 100,
                         validator: (value) {
                           if (value == null || value.trim().isEmpty) {
                             return 'este campo é obrigatório';
