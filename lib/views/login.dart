@@ -64,13 +64,13 @@ class _LoginState extends State<Login> {
                     ),
                     Text('login', style: TextStyle( fontSize: 60, color: Theme.of(context).colorScheme.onPrimary, decoration: TextDecoration.none)),
                     SizedBox(
-                      height: size.width * 10/100,
+                      height: size.width * 7/100,
                     ),
                     Field(
                       text: "usuario",
                       fieldController: _nomeController,
                       width: size.width - 50,
-                      height: 65,
+                      height: 70,
                       validator: (value){
                         if(value == null || value.trim().isEmpty ){
                           return 'este campo é obrigatório';
@@ -85,7 +85,7 @@ class _LoginState extends State<Login> {
                       fieldController: _senhaController,
                       
                       width: size.width - 50,
-                      height: 65,
+                      height: 70,
                       validator: (value){
                         if(value == null || value.trim().isEmpty ){
                           return 'este campo é obrigatório';
@@ -119,7 +119,7 @@ class _LoginState extends State<Login> {
                             backgroundColor: WidgetStatePropertyAll(Theme.of(context).colorScheme.secondary)
                           ),
                           child: Text("entrar",
-                            style: TextStyle(fontSize: 25),
+                            style: TextStyle(fontSize: 20),
                           ),
                           onPressed: () async {
                             //entrar no site

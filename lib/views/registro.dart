@@ -157,7 +157,7 @@ class _RegistroState extends State<Registro> {
                             ),
                             child: Text(
                               "cadastrar",
-                              style: TextStyle(fontSize: 25),
+                              style: TextStyle(fontSize: 20),
                             ),
                             onPressed: () async {
                               //entrar no site
