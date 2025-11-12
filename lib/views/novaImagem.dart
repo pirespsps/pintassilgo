@@ -19,12 +19,15 @@ class NovaImagem extends StatefulWidget {
   Future<List<Folder>> getFolders() async {
     final FolderDAO folderDAO = FolderDAO();
     final id = await getUserId();
+    print('Carregando pastas...');
     if (id == null) {
       return [];
     }
     return await folderDAO.foldersByUser(int.parse(id));
   }
 }
+
+
 
 class _NovaImagemState extends State<NovaImagem> {
   final _formkey = GlobalKey<FormState>();
@@ -65,9 +68,6 @@ class _NovaImagemState extends State<NovaImagem> {
               ),
               Container(
                 height: 20,
-                decoration: BoxDecoration(
-                  //image: DecorationImage(image: Image.file())
-                ),
               ),
               imageField(context, size),
               Form(
@@ -104,9 +104,14 @@ class _NovaImagemState extends State<NovaImagem> {
                       ),
                       child: Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 3.0),
-                        child: FutureBuilder(
-                          future: _folders, // Future<List<Folder>>
+                        child: FutureBuilder<List<Folder>>(
+                          future: _folders,
                           builder: (context, snapshot) {
+
+                            if(snapshot.hasError){
+                              print('Erro : ${snapshot.error}');
+                            }
+
                             if (snapshot.data!.isEmpty) {
                               return const Text('nenhuma pasta criada');
                             }

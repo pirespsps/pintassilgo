@@ -2,7 +2,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
+import 'package:pintassilgo/views/configView.dart';
 import 'package:pintassilgo/views/novaImagem.dart';
+import 'package:pintassilgo/views/novaPasta.dart';
 
 class Appbar extends StatefulWidget {
   const Appbar({super.key});
@@ -72,6 +74,15 @@ class _AppbarState extends State<Appbar> {
                                                 }));
                                               }, 
                                               child: Text("Enviar nova imagem")
+                                            ),
+                                            TextButton(
+                                              onPressed: () {
+                                                removeOverlayAdd();
+                                                Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) {
+                                                  return NovaPasta();
+                                                }));
+                                              }, 
+                                              child: Text("Criar nova pasta")
                                             )
                                           ],
                                         )
@@ -152,7 +163,11 @@ class _AppbarState extends State<Appbar> {
                             iconSize: size.width * 10 / 100,
                           ),
                           IconButton(
-                            onPressed: () => {},
+                            onPressed: () => {
+                              Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) {
+                                  return Config();
+                              }))
+                            },
                             icon: Icon(Icons.settings),
                             color: colorScheme.onSecondary,
                             iconSize: size.width * 10 / 100,

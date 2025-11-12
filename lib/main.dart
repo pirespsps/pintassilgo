@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pintassilgo/components/appbar.dart';
 import 'package:pintassilgo/components/pasta.dart';
+import 'package:pintassilgo/dataBaseHelper.dart';
 import 'package:pintassilgo/views/login.dart';
 import 'package:pintassilgo/views/novaPasta.dart';
 import 'package:pintassilgo/views/registro.dart';

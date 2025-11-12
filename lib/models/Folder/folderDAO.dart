@@ -6,7 +6,7 @@ import 'package:sqflite/sqlite_api.dart';
 class FolderDAO extends GenericDAO<Folder> {
 
   @override
-  String table = "tb_folder"; 
+  String table = "tbFolder"; 
 
   @override
   Folder fromMap(item){
@@ -22,6 +22,8 @@ class FolderDAO extends GenericDAO<Folder> {
   Future<List<Folder>> foldersByUser(int id) async{
     Database db = await DatabaseHelper.instance.database;
     var objects = await db.query(table, where: "idUser = ?", whereArgs: [id]);
+
+    print('Puxando pastas do banco...');
 
     List<Folder> objectList = objects.isNotEmpty
     ? objects.map((item) => fromMap(item)).toList()
