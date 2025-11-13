@@ -34,7 +34,7 @@ class UserDAO extends GenericDAO<User> {
     final Database db = await DatabaseHelper.instance.database;
 
     var resultado = await db.rawQuery(
-      "select * from tbUser where name = '${user.name}' AND '${user.password}'"
+      "select * from tbUser where name = '${user.name}' AND password = '${user.password}'"
     );
     if (resultado.isNotEmpty){
       return true;

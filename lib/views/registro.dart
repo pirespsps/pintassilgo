@@ -17,6 +17,7 @@ class Registro extends StatefulWidget {
 
 class _RegistroState extends State<Registro> {
   final _formKey = GlobalKey<FormState>();
+  final dao = UserDAO();
   String _user = '', _senha = '', _confirmarSenha = '';
   bool _visibilidadeSenha = false;
   bool _visibilidadeConfirmarSenha = false;
@@ -78,9 +79,6 @@ class _RegistroState extends State<Registro> {
                         validator: (value) {
                           if (value == null || value.trim().isEmpty) {
                             return 'este campo é obrigatório';
-                            // }else if(value == TODOS OS USUARIO CADASTRADOS){
-                            //   // usuario ja existe
-                            //   return 'este usuário já existe';
                           } else {
                             return null;
                           }
@@ -161,26 +159,17 @@ class _RegistroState extends State<Registro> {
                             ),
                             onPressed: () async {
                               //entrar no site
-                              if (_formKey.currentState!.validate()){
-                                _formKey.currentState!.save();
-                              }
 
-                              User user = User(
-                                name: _nomeController.text,
-                                password: _senhaController.text, //criptografia
-                              );
-        
-                              UserDAO userDAO = UserDAO();
-        
-                              int id = await userDAO.add(user);
-        
-                              final storage = FlutterSecureStorage();
-                              storage.write(key: "user", value: id.toString());
-        
-                              // Navigator.push(
-                              //   context,
-                              //   MaterialPageRoute(builder: (context) => const MyHomePage()),
-                              // );
+
+
+                              if (_formKey.currentState!.validate()){
+                                dao.registro(User(name: _user, password: _senha))
+                                .whenComplete((){
+                                  Navigator.push(
+                                  context,
+                                  MaterialPageRoute(builder: (context) => const Login()),);
+                                });
+                              }
                             },
                           ),
                           Padding(

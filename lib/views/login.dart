@@ -26,10 +26,10 @@ class _LoginState extends State<Login> {
   final TextEditingController _nomeController = TextEditingController();
   final TextEditingController _senhaController = TextEditingController();
 
-  login(){
-    var resposta = dao.login(User(name: _user, password: _senha));
+  login() async {
+    var resposta = await dao.login(User(name: _user, password: _senha));
     if (resposta == true){
-      Navigator.push(
+      Navigator.pushReplacement(
         context,
         MaterialPageRoute(builder: (context) => const MyHomePage()),
       );      
