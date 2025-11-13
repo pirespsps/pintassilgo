@@ -106,119 +106,135 @@ class _NovaImagemState extends State<NovaImagem> {
       body: FutureBuilder(
         future: isEdit,
         builder: (context, asyncSnapshot) {
-          return Container(
-            color: MARROM_CLARO,
-            width: size.width,
-            height: size.height,
-            child: Padding(
-              padding: const EdgeInsets.symmetric(vertical: 40, horizontal: 3),
-              child: Column(
-                spacing: 10,
-                children: [
-                  Text(
-                    widget.imageEdit == null ? "nova imagem" : "editar imagem",
-                    style: TextStyle(color: Colors.white),
-                    textScaler: TextScaler.linear(3),
-                  ),
-                  Container(height: 20),
-                  imageField(context, size),
-                  Form(
-                    key: _formkey,
-                    child: Column(
-                      spacing: 10,
-                      children: [
-                        Field(
-                          text: "título",
-                          fieldController: _tituloController,
-                          width: size.width - 50,
-                          height: 65,
-                        ),
-          
-                        ..._buildNewFields(size),
-          
-                        Container(
-                          width: size.width - 50,
-                          decoration: BoxDecoration(
-                            color: CINZA,
-                            borderRadius: BorderRadius.circular(7),
-                          ),
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 3.0),
-                            child: FutureBuilder<List<Folder>>(
-                              future: _foldersFuture,
-                              builder: (context, snapshot) {
-                                if (snapshot.hasError) {
-                                  return Padding(
-                                    padding: const EdgeInsets.all(8),
-                                    child: Text(
-                                      "Erro ao carregar pastas: ${snapshot.error}",
-                                    ),
-                                  );
-                                }
-          
-                                final folders = snapshot.data ?? [];
-          
-                                if (folders.isEmpty) {
-                                  return Padding(
-                                    padding: EdgeInsets.all(8),
-                                    child: Text("Pastas vazias"),
-                                  );
-                                }
-          
-                                return DropdownButton<Folder>(
-                                  dropdownColor: CINZA,
-                                  style: TextStyle(color: MARROM),
-                                  menuWidth: size.width - 10,
-                                  icon: Padding(
-                                    padding: EdgeInsets.only(
-                                      left: size.width - 140,
-                                      right: 10,
-                                    ),
-                                    child: Icon(
-                                      Icons.arrow_drop_down,
-                                      color: MARROM,
-                                      size: 40,
-                                    ),
-                                  ),
-                                  value: _selectedFolder,
-                                  items: folders.map((folder) {
-                                    return DropdownMenuItem<Folder>(
-                                      value: folder,
-                                      child: Text(folder.name),
-                                    );
-                                  }).toList(),
-                                  onChanged: (Folder? item) {
-                                    setState(() {
-                                      _selectedFolder = item;
-                                    });
-                                  },
-                                );
-                              },
+          return SingleChildScrollView(
+            child: Container(
+              color: MARROM_CLARO,
+              width: size.width,
+              height: size.height,
+              child: Padding(
+                padding: const EdgeInsets.symmetric(vertical: 40, horizontal: 3),
+                child: Column(
+                  spacing: 10,
+                  children: [
+                    Text(
+                      widget.imageEdit == null ? "nova imagem" : "editar imagem",
+                      style: TextStyle(color: Colors.white),
+                      textScaler: TextScaler.linear(3),
+                    ),
+                    Container(height: 20),
+                    imageField(context, size),
+                    Expanded(
+                      child: Form(
+                        
+                        key: _formkey,
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          spacing: 10,
+                          children: [
+                            Field(
+                              text: "título",
+                              fieldController: _tituloController,
+                              width: size.width - 50,
+                              height: 65,
                             ),
-                          ),
+                                
+                            ..._buildNewFields(size),
+                                
+                            Container(
+                              width: size.width - 50,
+                              decoration: BoxDecoration(
+                                color: CINZA,
+                                borderRadius: BorderRadius.circular(7),
+                              ),
+                              child: Padding(
+                                padding: const EdgeInsets.symmetric(horizontal: 3.0),
+                                child: FutureBuilder<List<Folder>>(
+                                  future: _foldersFuture,
+                                  builder: (context, snapshot) {
+                                    if (snapshot.hasError) {
+                                      return Padding(
+                                        padding: const EdgeInsets.all(8),
+                                        child: Text(
+                                          "Erro ao carregar pastas: ${snapshot.error}",
+                                        ),
+                                      );
+                                    }
+                                
+                                    final folders = snapshot.data ?? [];
+                                
+                                    if (folders.isEmpty) {
+                                      return Padding(
+                                        padding: EdgeInsets.all(8),
+                                        child: Text("Pastas vazias"),
+                                      );
+                                    }
+                                
+                                    return DropdownButton<int>(
+                                      dropdownColor: CINZA,
+                                      style: TextStyle(color: MARROM),
+                                      menuWidth: size.width - 10,
+                                      icon: Padding(
+                                        padding: EdgeInsets.only(
+                                          left: size.width * 42 / 100,
+                                          right: 10,
+                                        ),
+                                        child: Icon(
+                                          Icons.arrow_drop_down,
+                                          color: MARROM,
+                                          size: 40,
+                                        ),
+                                      ),
+                                      value: _selectedFolder == null ? null : _selectedFolder?.id!,
+                                      hint: Text("Pasta"),
+                                      items: folders.map((folder) {
+                                      
+                                        return DropdownMenuItem<int>(
+                                          value: folder.id!,
+                                          child: Text(folder.name),
+                                        );
+                                        
+                                      }).toList(),
+                                      onChanged: (int? id) {
+                                        setState(() {
+                                          var item = folders.firstWhere((folder) {
+                                            if (folder.id == id) {
+                                              return true;
+                                            } else {
+                                              return false;
+                                            }
+                                          });
+                                          _selectedFolder = item;
+                                        });
+                                      },
+                                    );
+                                  },
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+            
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        FilledButton(
+                          onPressed: () {
+                            Navigator.pop(context);
+                          },
+                          child: Text("cancelar"),
+                        ),
+                        FilledButton(
+                          onPressed: () => {sendForm(context)},
+                          child: widget.imageEdit == null
+                          ?Text("criar")
+                          :Text("salvar"),
                         ),
                       ],
                     ),
-                  ),
-          
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      FilledButton(
-                        onPressed: () {
-                          Navigator.pop(context);
-                        },
-                        child: Text("cancelar"),
-                      ),
-                      FilledButton(
-                        onPressed: () => {sendForm(context)},
-                        child: widget.imageEdit == null
-                        ?Text("criar")
-                        :Text("salvar"),
-                      ),
-                    ],
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
           );
@@ -276,7 +292,7 @@ class _NovaImagemState extends State<NovaImagem> {
       title: _tituloController.text,
       date: DateTime.now(),
       idFolder: _selectedFolder!.id,
-      fileExtension: _image!.mimeType!,
+      fileExtension: "png",
     );
 
     ImageDAO imagedao = ImageDAO();
@@ -295,9 +311,7 @@ class _NovaImagemState extends State<NovaImagem> {
       join(
         documentsDirectory.path,
         "images/",
-        id.toString(),
-        ".",
-        _image!.mimeType,
+        id.toString() + ".png",
       ),
     );
 
@@ -345,6 +359,7 @@ class _NovaImagemState extends State<NovaImagem> {
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
                           Column(
+                            mainAxisSize: MainAxisSize.min,
                             children: [
                               IconButton(
                                 icon: Icon(Icons.camera_alt_outlined),
