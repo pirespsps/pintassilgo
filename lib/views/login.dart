@@ -119,18 +119,18 @@ class _LoginState extends State<Login> {
                         }
                       },
                       onSaved: (value) => _senha = value.toString(),
-                      suffixIcon: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: IconButton(
-                          icon: Icon(
-                            _visibilidadeSenha ? Icons.visibility_off : Icons.visibility,
-                            color: Theme.of(context).colorScheme.onPrimary) ,
+                      suffixIcon: IconButton(
+                          icon: Padding(
+                            padding: const EdgeInsets.only(bottom: 10),
+                            child: Icon(
+                              _visibilidadeSenha ? Icons.visibility_off : Icons.visibility,
+                              color: Theme.of(context).colorScheme.onPrimary),
+                          ) ,
                           onPressed: (){
                             setState(() {
                               _visibilidadeSenha = !_visibilidadeSenha;
                             });
                           }, 
-                          ),
                       ),
                       obscureText: !_visibilidadeSenha,
                     ),

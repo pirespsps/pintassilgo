@@ -39,6 +39,7 @@ class _FieldFormState extends State<Field> {
           borderRadius: BorderRadius.circular(7),
         ),
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Padding(
