@@ -70,6 +70,18 @@ class DatabaseHelper {
 
       PRIMARY KEY (idImage,idTag)
       );''');
+
+      await db.execute('''
+      CREATE TABLE tbFolderTag(
+
+      idFolder INTEGER NOT NULL,
+      idTag INTEGER NOT NULL,
+      
+      FOREIGN KEY (idFolder) REFERENCES tbFolder(id) ON DELETE CASCADE, 
+      FOREIGN KEY (idTag) REFERENCES tbTab(id),
+
+      PRIMARY KEY (idFolder,idTag)
+      ); ''');
   }
 
   Future<Database> _initDatabase() async {

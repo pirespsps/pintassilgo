@@ -1,7 +1,10 @@
 
+import 'package:flex_color_picker/flex_color_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
+import 'package:pintassilgo/models/Tag/tag.dart';
+import 'package:pintassilgo/models/Tag/tagDAO.dart';
 import 'package:pintassilgo/views/configView.dart';
 import 'package:pintassilgo/views/novaImagem.dart';
 import 'package:pintassilgo/views/novaPasta.dart';
@@ -20,15 +23,22 @@ class _AppbarState extends State<Appbar> {
   bool isFocused = false;
 
   OverlayEntry? _overlayAdd;
+  OverlayEntry? _overlayFiltro;
 
   void removeOverlayAdd() {
     _overlayAdd!.remove();
+  }
+
+  void removeOverlayFiltro() {
+    _overlayFiltro!.remove();
   }
 
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     ColorScheme colorScheme = Theme.of(context).colorScheme;
+
+    TagDAO tagDao = TagDAO();
 
     return Row(
       children: [
@@ -178,7 +188,101 @@ class _AppbarState extends State<Appbar> {
                     child: Row(
                       children: [
                         IconButton(
-                          onPressed: () => {},
+                          onPressed: () {
+                            _overlayFiltro = OverlayEntry(
+                              builder: (BuildContext context) {
+                                ColorScheme colorScheme = Theme.of(context).colorScheme;
+
+                                return Column(
+                                  crossAxisAlignment: CrossAxisAlignment.end,
+                                  children: [
+                                    Expanded(
+                                      child: Container(
+                                        decoration: BoxDecoration(
+                                          color: Color.fromARGB(120, 0, 0, 0)
+                                        ),
+                                        child: Center(
+                                          child: SizedBox(
+                                            width: size.width * 80 / 100,
+                                            height: size.height * 80 / 100,
+                                            child: Padding(
+                                              padding: EdgeInsets.fromLTRB(0.0, size.height * 0.1, 0.0, size.height * 0.1),
+                                              child: Container(
+                                                decoration: BoxDecoration(
+                                                  borderRadius: BorderRadius.circular(10),
+                                                  color: colorScheme.surface
+                                                ),
+                                                child: Column(
+                                                  children: [
+                                                    IconButton(
+                                                      onPressed: () {
+                                                        removeOverlayFiltro();
+                                                      },
+                                                      icon: Icon(Icons.close),
+                                                    ),
+
+                                                    FutureBuilder(
+                                                      future: tagDao.list(), 
+                                                      builder: (context, snapshot) {
+                                                        if (snapshot.data != null) {
+                                                          return SizedBox(
+                                                            width: size.width * 75 / 100,
+                                                            height: size.height * 50 / 100,
+                                                            child: ListView.builder(
+                                                              itemCount: snapshot.data!.length,
+                                                              itemBuilder: (context, index) {
+                                                                return Container(
+                                                                  width: size.width * 75 / 100,
+                                                                  height: size.height * 10 / 100,
+                                                                  decoration: BoxDecoration(
+                                                                    color: snapshot.data![index].color.toColor
+                                                                  ),
+                                                                  child: Row(
+                                                                    children: [
+                                                                      IconButton(
+                                                                        onPressed: () {},
+                                                                        icon: Icon(Icons.circle_outlined)
+                                                                      ),
+                                                                      Material(
+                                                                        color: Colors.transparent,
+                                                                        child: Text(
+                                                                          snapshot.data![index].name,
+                                                                        
+                                                                          style: TextStyle(
+                                                                            color: Colors.white,
+                                                                            textBaseline: null,
+                                                                            fontSize: 15
+                                                                          ),
+                                                                        ),
+                                                                      )
+                                                                    ],
+                                                                  ),
+                                                                );
+                                                              }
+                                                            ),
+                                                          );
+                                                        } else {
+                                                          return Container();
+                                                        }
+                                                      }
+                                                    )
+                                                  ],
+                                                )
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      )
+                                    )
+                                  ],
+                                );    
+                              }
+                            );
+                            Overlay.of(context, debugRequiredFor: widget).insert(
+                              _overlayFiltro!
+                            );
+                            RenderPerformanceOverlay();
+                          },
                           icon: Icon(Icons.filter_list),
                           color: colorScheme.onSecondary,
                           iconSize: size.width * 10 / 100,

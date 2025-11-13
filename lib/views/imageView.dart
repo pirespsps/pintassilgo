@@ -114,6 +114,7 @@ class _ImageviewState extends State<Imageview> {
                       );
                     },
                   ),
+              
                   SizedBox(height: size.width * 10 / 100),
                   FutureBuilder(
                     future: notas,

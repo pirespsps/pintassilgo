@@ -255,23 +255,6 @@ class _NovaImagemState extends State<NovaImagem> {
         width: size.width - 50,
         height: 65,
       ),
-      Field(
-        text: "links",
-        fieldController: _linksController,
-        width: size.width - 50,
-        height: 65,
-        validator: (value) {
-          if (value == null || value.isEmpty) {
-            return "Insira um valor, campo obrigatório";
-          }
-
-          if (!value.contains(".") || !value.contains("/")) {
-            return "Insira um link válido";
-          }
-
-          return null;
-        },
-      ),
     ];
   }
 

@@ -10,6 +10,9 @@ import 'package:pintassilgo/models/Folder/folder.dart';
 import 'package:pintassilgo/models/Folder/folderDAO.dart';
 import 'package:pintassilgo/models/Image/image.dart';
 import 'package:pintassilgo/models/Image/imageDAO.dart';
+import 'package:pintassilgo/models/Note/noteDAO.dart';
+import 'package:pintassilgo/models/Tag/tag.dart';
+import 'package:pintassilgo/models/Tag/tagDAO.dart';
 import 'package:pintassilgo/views/home.dart';
 import 'package:pintassilgo/views/novaPasta.dart';
 
@@ -27,6 +30,7 @@ class _FolderViewState extends State<FolderView> {
   }
 
   ImageDAO imageDao = ImageDAO();
+  TagDAO tagDAO = TagDAO();
 
   @override
   Widget build(BuildContext context) {
@@ -39,9 +43,9 @@ class _FolderViewState extends State<FolderView> {
       50,
     );
 
-    setState(() {
-      
-    });
+    Future<List<Tag>> tags = tagDAO.tagsByFolder(widget.folder.id!);
+
+    setState(() {});
 
     return Scaffold(
       body: Column(
@@ -112,6 +116,32 @@ class _FolderViewState extends State<FolderView> {
           ),
           Expanded(
             child: FutureBuilder(
+              future: tags,
+              builder: (context, snapshot) {
+                if (snapshot.data != null) {
+                  return ListView.builder(
+                    itemCount: snapshot.data!.length,
+                    itemBuilder: (context, index) {
+                      return Row(
+                        children: [
+                          Text(
+                            snapshot.data![index].name,
+                            style: TextStyle(
+                              //backgroundColor: Color.fromARGB(snapshot.data[index].color), muda cor aq!
+                            ),
+                          ),
+                        ],
+                      );
+                    },
+                  );
+                } else {
+                  return Text("Sem tags para a pasta!");
+                }
+              },
+            ),
+          ),
+          Expanded(
+            child: FutureBuilder(
               future: images,
               builder: (context, snapshot) {
                 if (snapshot.data != null) {
@@ -166,21 +196,18 @@ Dialog getDialog(context, int id) {
               ),
               TextButton(
                 onPressed: () async {
-
                   ImageDAO imagedao = ImageDAO();
                   List<Imagem> images = await imagedao.imagesByFolder(id, null);
 
-                  final Directory dir = await getApplicationDocumentsDirectory();
-                  final String path = join(
-                  dir.path,
-                  "images/",
-                  );
+                  final Directory dir =
+                      await getApplicationDocumentsDirectory();
+                  final String path = join(dir.path, "images/");
 
-                  for(int i = 0; i< images.length ; i++){
-
-                    final File file = File(join(path,"${images.elementAt(i).id}.png"));
+                  for (int i = 0; i < images.length; i++) {
+                    final File file = File(
+                      join(path, "${images.elementAt(i).id}.png"),
+                    );
                     await file.delete();
-
                   }
 
                   FolderDAO folderDAO = FolderDAO();
