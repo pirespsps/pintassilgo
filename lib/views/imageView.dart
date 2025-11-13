@@ -58,6 +58,12 @@ class _ImageviewState extends State<Imageview> {
                             scrollDirection: Axis.horizontal,
                             child: Row(
                               children: [
+                                IconButton(
+                                  onPressed: () {
+                                    Navigator.pop(context);
+                                  },
+                                  icon: Icon(Icons.keyboard_return, size: 50,)
+                                ),
                                 Text(
                                   widget.imagem.title,
                                   style: TextStyle(fontSize: 60),
