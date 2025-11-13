@@ -34,7 +34,7 @@ class DatabaseHelper {
       CREATE TABLE tbImage(
       id INTEGER PRIMARY KEY AUTOINCREMENT,
       title TEXT NOT NULL,
-      date TEXT NOT NULL,
+      date TEXT,
       idFolder TEXT NOT NULL, 
       isFavorite INTEGER,
       fileExtension TEXT NOT NULL,

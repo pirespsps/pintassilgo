@@ -1,16 +1,24 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:path/path.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:pintassilgo/models/Image/image.dart';
 import 'package:pintassilgo/views/folderView.dart';
 
 class Pasta extends StatefulWidget {
   final String nome;
+  final List<Imagem>? images;
 
-  const Pasta({super.key, required this.nome});
+  const Pasta({super.key, required this.nome, this.images});
 
   @override
   State<Pasta> createState() => _PastaState();
 }
 
 class _PastaState extends State<Pasta> {
+
+  Future<Directory> documentsDirectory = getApplicationDocumentsDirectory();
 
   @override
   Widget build(BuildContext context) {
@@ -31,6 +39,72 @@ class _PastaState extends State<Pasta> {
               }, 
               child: Stack(
                 children: [
+                  for (int i = 0; i < (widget.images != null ? widget.images!.length : 0); i++) FutureBuilder(
+                    future: documentsDirectory,
+                    builder: (context, asyncSnapshot) {
+                      return Positioned(
+                        left: size.height * (i == 0 ? 18 : i == 1 ? 15 : i == 2 ? 7.5 : 0) / 100,
+                        child: Container(
+                          height: size.height * 20 / 100,
+                          width: size.height * 20 / 100,
+                        
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(40),
+                          ),
+                      
+                          child: Image.file(
+                            File(
+                              join(
+                                asyncSnapshot.data!.path,
+                                "images/",
+                                widget.images![i].id!.toString() + ".png",
+                              ),
+                            )
+                          ),
+                        ),
+                      );
+                    }
+                  ),
+                  widget.images != null ? Container() : Positioned(
+                    child: Container(
+                      height: size.height * 20 / 100,
+                      width: size.height * 80 / 100,
+                    
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(40),
+                        color: Colors.grey
+                      ),
+                    ),
+                  ),
+
+                ],
+              ),
+            ),
+            Positioned(
+              width: size.width * 80 / 100,
+              top: size.height * 20 / 100,
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(20.0, 0.0, 25.0, 5.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(widget.nome),
+                    IconButton(
+                      onPressed: () {},
+                      icon: Icon(Icons.star)
+                    )
+                  ],
+                ),
+              ),
+            )
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+/*
                   Positioned(
                     left: size.height * 18 / 100,
                     child: Container(
@@ -76,29 +150,4 @@ class _PastaState extends State<Pasta> {
                       ),
                     ),
                   ),
-                ],
-              ),
-            ),
-            Positioned(
-              width: size.width * 80 / 100,
-              top: size.height * 20 / 100,
-              child: Padding(
-                padding: const EdgeInsets.fromLTRB(20.0, 0.0, 25.0, 5.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(widget.nome),
-                    IconButton(
-                      onPressed: () {},
-                      icon: Icon(Icons.star)
-                    )
-                  ],
-                ),
-              ),
-            )
-          ],
-        ),
-      ),
-    );
-  }
-}
+*/

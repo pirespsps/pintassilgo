@@ -1,4 +1,4 @@
-class Image {
+class Imagem {
   int? id;
   String title;
   DateTime date;
@@ -6,9 +6,9 @@ class Image {
   bool isFavorite;
   String fileExtension;
 
-  Image({required this.title, required this.date, required this.idFolder, this.isFavorite = false, this.id, required this.fileExtension}); 
+  Imagem({required this.title, required this.date, required this.idFolder, this.isFavorite = false, this.id, required this.fileExtension}); 
 
-  factory Image.fromMap(Map<String, dynamic> json) => Image(
+  factory Imagem.fromMap(Map<String, dynamic> json) => Imagem(
     id: json['id'],
     title: json['title'],
     date: DateTime.parse(json['date']),

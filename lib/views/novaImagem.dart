@@ -9,13 +9,13 @@ import 'package:pintassilgo/components/field.dart';
 import 'package:pintassilgo/main.dart';
 import 'package:pintassilgo/models/Folder/folder.dart';
 import 'package:pintassilgo/models/Folder/folderDAO.dart';
-import 'package:pintassilgo/models/Image/image.dart' as image_model;
+import 'package:pintassilgo/models/Image/image.dart';
 import 'package:pintassilgo/models/Image/imageDAO.dart';
 import 'package:pintassilgo/models/Note/note.dart';
 import 'package:pintassilgo/models/Note/noteDAO.dart';
 
 class NovaImagem extends StatefulWidget {
-  final image_model.Image? imageEdit;
+  final Imagem? imageEdit;
   const NovaImagem({super.key, this.imageEdit});
 
   @override
@@ -288,7 +288,7 @@ class _NovaImagemState extends State<NovaImagem> {
       return;
     }
 
-    image_model.Image image = image_model.Image(
+    Imagem image = Imagem(
       title: _tituloController.text,
       date: DateTime.now(),
       idFolder: _selectedFolder!.id,

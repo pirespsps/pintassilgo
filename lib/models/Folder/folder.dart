@@ -1,7 +1,13 @@
+
+
+import 'package:pintassilgo/models/Image/image.dart';
+
 class Folder {
   int? id;
   String name;
   int? idUser;
+
+  List<Imagem>? images;
 
   Folder({required this.name, this.id, this.idUser}); 
 
