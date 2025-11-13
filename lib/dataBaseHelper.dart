@@ -25,6 +25,7 @@ class DatabaseHelper {
       id INTEGER PRIMARY KEY AUTOINCREMENT, 
       name TEXT NOT NULL,
       idUser INT NOT NULL,
+      isLiked INT NOT NULL,
 
       FOREIGN KEY (idUser) REFERENCES tbUser(id)
       );'''); 

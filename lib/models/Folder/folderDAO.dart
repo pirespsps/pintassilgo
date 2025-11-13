@@ -36,7 +36,7 @@ class FolderDAO extends GenericDAO<Folder> {
 
   Future<List<Folder>> foldersByUserView(int id) async{
     Database db = await DatabaseHelper.instance.database;
-    var objects = await db.query(table, where: "idUser = ?", whereArgs: [id]);
+    var objects = await db.query(table, where: "idUser = ?", whereArgs: [id], orderBy: "isLiked DESC");
 
     ImageDAO imageDao = ImageDAO();
 

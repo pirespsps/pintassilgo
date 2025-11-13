@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:pintassilgo/models/Folder/folder.dart';
+import 'package:pintassilgo/models/Folder/folderDAO.dart';
 import 'package:pintassilgo/models/Image/image.dart';
 import 'package:pintassilgo/views/folderView.dart';
 
@@ -21,6 +22,8 @@ class Pasta extends StatefulWidget {
 class _PastaState extends State<Pasta> {
 
   Future<Directory> documentsDirectory = getApplicationDocumentsDirectory();
+
+  FolderDAO folderDao = FolderDAO();
 
   @override
   Widget build(BuildContext context) {
@@ -100,8 +103,14 @@ class _PastaState extends State<Pasta> {
                   children: [
                     Text(widget.nome),
                     IconButton(
-                      onPressed: () {},
-                      icon: Icon(Icons.star)
+                      onPressed: () async {
+                        widget.pasta.like();
+                        await folderDao.update(widget.pasta, widget.pasta.id!);
+                        
+                        setState(() {
+                        });
+                      },
+                      icon: widget.pasta.isLiked ? Icon(Icons.star) : Icon(Icons.star_border)
                     )
                   ],
                 ),
