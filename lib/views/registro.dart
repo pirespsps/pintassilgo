@@ -64,7 +64,7 @@ class _RegistroState extends State<Registro> {
                       Text(
                         'registro',
                         style: TextStyle(
-                          fontSize: 60,
+                          fontSize: 55,
                           color: Theme.of(context).colorScheme.onPrimary,
                           decoration: TextDecoration.none,
                         ),
@@ -145,7 +145,7 @@ class _RegistroState extends State<Registro> {
                         obscureText: !_visibilidadeConfirmarSenha,
                       ),
         
-                      SizedBox(height: size.height * 2 / 100),
+                      SizedBox(height: size.height * 1 / 100),
                       Column(
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: [
@@ -177,10 +177,10 @@ class _RegistroState extends State<Registro> {
                               final storage = FlutterSecureStorage();
                               storage.write(key: "user", value: id.toString());
         
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(builder: (context) => const MyHomePage()),
-                              );
+                              // Navigator.push(
+                              //   context,
+                              //   MaterialPageRoute(builder: (context) => const MyHomePage()),
+                              // );
                             },
                           ),
                           Padding(

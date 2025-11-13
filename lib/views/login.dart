@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:pintassilgo/components/field.dart';
+import 'package:pintassilgo/dataBaseHelper.dart';
 import 'package:pintassilgo/main.dart';
 import 'package:pintassilgo/models/User/user.dart';
 import 'package:pintassilgo/models/User/userDAO.dart';
 import 'package:pintassilgo/views/home.dart';
 import 'package:pintassilgo/views/registro.dart';
+import 'package:pintassilgo/dataBaseHelper.dart';
 
 class Login extends StatefulWidget {
   final User? user;
@@ -17,7 +19,9 @@ class Login extends StatefulWidget {
 
 class _LoginState extends State<Login> {
   final _formKey = GlobalKey<FormState>();
+  
   String _user = '', _senha = '';
+  bool _isLoginTrue = false;
   bool _visibilidadeSenha = false;
   final TextEditingController _nomeController = TextEditingController();
   final TextEditingController _senhaController = TextEditingController();
@@ -64,7 +68,7 @@ class _LoginState extends State<Login> {
                     SizedBox(
                       height: size.width * 10/100,
                     ),
-                    Text('login', style: TextStyle( fontSize: 60, color: Theme.of(context).colorScheme.onPrimary, decoration: TextDecoration.none)),
+                    Text('login', style: TextStyle( fontSize: 50, color: Theme.of(context).colorScheme.onPrimary, decoration: TextDecoration.none)),
                     SizedBox(
                       height: size.width * 7/100,
                     ),
