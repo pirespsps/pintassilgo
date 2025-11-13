@@ -7,8 +7,9 @@ import 'package:pintassilgo/models/Image/image.dart';
 import 'package:pintassilgo/views/imageView.dart';
 
 class Pinta extends StatefulWidget {
-  final Imagem imagem;
-  const Pinta({super.key, required this.imagem});
+  final Imagem imagem; 
+  final Function updateParent;
+  const Pinta({super.key, required this.imagem, required this.updateParent});
 
   @override
   State<Pinta> createState() => _PintaState();
@@ -33,6 +34,7 @@ class _PintaState extends State<Pinta> {
 
           setState(() {
           });
+          widget.updateParent();
         },
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,

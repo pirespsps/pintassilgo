@@ -75,110 +75,112 @@ class _LoginState extends State<Login> {
                 color: Theme.of(context).colorScheme.primary,
                 borderRadius: BorderRadius.only(topRight: Radius.circular(50)),
               ),
-              child: Form(
-                key: _formKey,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  spacing: 15,
-                  children: [
-                    SizedBox(
-                      height: size.width * 10/100,
-                    ),
-                    Text('login', style: TextStyle( fontSize: 50, color: Theme.of(context).colorScheme.onPrimary, decoration: TextDecoration.none)),
-                    _isLoginErrado? Text(
-                        "usuário ou senha incorretos",
-                        style: TextStyle(color: Colors.red)
-                      ) : SizedBox(),
-                    SizedBox(
-                      height: size.width * 7/100,
-                    ),
-                    SizedBox(
-                      height: size.height * 10/100,
-                      child: Field(
-                        text: "usuário",
-                        fieldController: _nomeController,
-                        width: size.width * 85 / 100,
-                        height: size.height * 5 / 100,
-                        validator: (value){
-                          if(value == null || value.trim().isEmpty ){
-                            return 'este campo é obrigatório';
-                          }else{
-                            return null;
-                          }
-                        },
+              child: SingleChildScrollView(
+                child: Form(
+                  key: _formKey,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    spacing: 15,
+                    children: [
+                      SizedBox(
+                        height: size.width * 10/100,
                       ),
-                    ),
-                    SizedBox(
-                      height: size.height * 10/100,
-                      child: Field(
-                        text: "senha",
-                        fieldController: _senhaController,
-                        width: size.width * 85 / 100,
-                        height: size.height * 5 / 100,
-                        validator: (value){
-                          if(value == null || value.trim().isEmpty ){
-                            return 'este campo é obrigatório';
-                          }else if(value.length < 6){
-                            return 'a senha deve ter no mínimo 6 caracteres';
-                          }else{
-                            return null;
-                          }
-                        },
-                        suffixIcon: IconButton(
-                            icon: Padding(
-                              padding: const EdgeInsets.only(bottom: 10),
-                              child: Icon(
-                                _visibilidadeSenha ? Icons.visibility_off : Icons.visibility,
-                                color: Theme.of(context).colorScheme.onPrimary),
-                            ) ,
-                            onPressed: (){
-                              setState(() {
-                                _visibilidadeSenha = !_visibilidadeSenha;
-                              });
-                            }, 
-                        ),
-                        obscureText: !_visibilidadeSenha,
+                      Text('login', style: TextStyle( fontSize: 50, color: Theme.of(context).colorScheme.onPrimary, decoration: TextDecoration.none)),
+                      _isLoginErrado? Text(
+                          "usuário ou senha incorretos",
+                          style: TextStyle(color: Colors.red)
+                        ) : SizedBox(),
+                      SizedBox(
+                        height: size.width * 7/100,
                       ),
-                    ),
-                    SizedBox(
-                      height: size.width * 10/100,
-                    ),
-                    Column(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        ElevatedButton(
-                          style: ButtonStyle(
-                            backgroundColor: WidgetStatePropertyAll(Theme.of(context).colorScheme.secondary)
-                          ),
-                          child: Text("entrar",
-                            style: TextStyle(fontSize: 20),
-                          ),
-                          onPressed: () async {
-                            setState(() {});
-                          if (_formKey.currentState!.validate()){
-                            login();
-                          }   
+                      SizedBox(
+                        height: size.height * 10/100,
+                        child: Field(
+                          text: "usuário",
+                          fieldController: _nomeController,
+                          width: size.width * 85 / 100,
+                          height: size.height * 5 / 100,
+                          validator: (value){
+                            if(value == null || value.trim().isEmpty ){
+                              return 'este campo é obrigatório';
+                            }else{
+                              return null;
+                            }
                           },
                         ),
-                        Padding(
-                          padding: const EdgeInsets.only(bottom: 5),
-                          child: TextButton(
-                            child: Text("criar uma conta",
-                              style: TextStyle(
-                                fontSize: 15,
-                                color: Theme.of(context).colorScheme.onPrimary
-                              ),
+                      ),
+                      SizedBox(
+                        height: size.height * 10/100,
+                        child: Field(
+                          text: "senha",
+                          fieldController: _senhaController,
+                          width: size.width * 85 / 100,
+                          height: size.height * 5 / 100,
+                          validator: (value){
+                            if(value == null || value.trim().isEmpty ){
+                              return 'este campo é obrigatório';
+                            }else if(value.length < 6){
+                              return 'a senha deve ter no mínimo 6 caracteres';
+                            }else{
+                              return null;
+                            }
+                          },
+                          suffixIcon: IconButton(
+                              icon: Padding(
+                                padding: const EdgeInsets.only(bottom: 10),
+                                child: Icon(
+                                  _visibilidadeSenha ? Icons.visibility_off : Icons.visibility,
+                                  color: Theme.of(context).colorScheme.onPrimary),
+                              ) ,
+                              onPressed: (){
+                                setState(() {
+                                  _visibilidadeSenha = !_visibilidadeSenha;
+                                });
+                              }, 
+                          ),
+                          obscureText: !_visibilidadeSenha,
+                        ),
+                      ),
+                      SizedBox(
+                        height: size.width * 10/100,
+                      ),
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          ElevatedButton(
+                            style: ButtonStyle(
+                              backgroundColor: WidgetStatePropertyAll(Theme.of(context).colorScheme.secondary)
+                            ),
+                            child: Text("entrar",
+                              style: TextStyle(fontSize: 20),
                             ),
                             onPressed: () async {
-                              Navigator.push(context,
-                              MaterialPageRoute(builder: (context) => Registro(),),);
+                              setState(() {});
+                            if (_formKey.currentState!.validate()){
+                              login();
+                            }   
                             },
                           ),
-                        ),
-                      ],
-                    )
-                  ],
+                          Padding(
+                            padding: const EdgeInsets.only(bottom: 5),
+                            child: TextButton(
+                              child: Text("criar uma conta",
+                                style: TextStyle(
+                                  fontSize: 15,
+                                  color: Theme.of(context).colorScheme.onPrimary
+                                ),
+                              ),
+                              onPressed: () async {
+                                Navigator.push(context,
+                                MaterialPageRoute(builder: (context) => Registro(),),);
+                              },
+                            ),
+                          ),
+                        ],
+                      )
+                    ],
+                  ),
                 ),
               ),
             ),

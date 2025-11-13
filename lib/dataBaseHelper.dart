@@ -16,7 +16,7 @@ class DatabaseHelper {
     await db.execute('''
       CREATE TABLE tbUser(
       id INTEGER PRIMARY KEY AUTOINCREMENT, 
-      name UNIQUE TEXT NOT NULL,
+      name TEXT NOT NULL,
       password TEXT NOT NULL
       ); ''');
 
@@ -78,7 +78,7 @@ class DatabaseHelper {
       idTag INTEGER NOT NULL,
       
       FOREIGN KEY (idFolder) REFERENCES tbFolder(id) ON DELETE CASCADE, 
-      FOREIGN KEY (idTag) REFERENCES tbTab(id),
+      FOREIGN KEY (idTag) REFERENCES tbTag(id),
 
       PRIMARY KEY (idFolder,idTag)
       ); ''');

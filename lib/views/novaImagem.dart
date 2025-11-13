@@ -48,7 +48,7 @@ class _NovaImagemState extends State<NovaImagem> {
   final TextEditingController _linksController = TextEditingController();
 
   late Future<List<Folder>> _foldersFuture;
-  Folder? _selectedFolder;
+  int? _selectedFolder;
 
   XFile? _image;
 
@@ -83,7 +83,7 @@ class _NovaImagemState extends State<NovaImagem> {
       if (await file.exists()) {
         setState(() {
           _image = XFile(file.path);
-          _selectedFolder = folder;
+          _selectedFolder = folder!.id!;
         });
 
         return true;
@@ -121,7 +121,7 @@ class _NovaImagemState extends State<NovaImagem> {
                       textScaler: TextScaler.linear(3),
                     ),
                     Container(height: 20),
-                    imageField(context, size),
+                    widget.imageEdit != null ? Container() : imageField(context, size),
                     Expanded(
                       child: Form(
                         
@@ -183,7 +183,7 @@ class _NovaImagemState extends State<NovaImagem> {
                                           size: 40,
                                         ),
                                       ),
-                                      value: _selectedFolder == null ? null : _selectedFolder?.id!,
+                                      value: _selectedFolder,
                                       hint: Text("Pasta"),
                                       items: folders.map((folder) {
                                       
@@ -195,14 +195,8 @@ class _NovaImagemState extends State<NovaImagem> {
                                       }).toList(),
                                       onChanged: (int? id) {
                                         setState(() {
-                                          var item = folders.firstWhere((folder) {
-                                            if (folder.id == id) {
-                                              return true;
-                                            } else {
-                                              return false;
-                                            }
-                                          });
-                                          _selectedFolder = item;
+
+                                          _selectedFolder = id!;
                                         });
                                       },
                                     );
@@ -259,11 +253,14 @@ class _NovaImagemState extends State<NovaImagem> {
   }
 
   sendForm(context) async {
-    if (_image == null) {
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(SnackBar(content: Text('Selecione uma imagem')));
-      return;
+    
+    if (widget.imageEdit == null) {
+      if (_image == null) {
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text('Selecione uma imagem')));
+        return;
+    }
     }
 
     if (_tituloController.text.isEmpty || _notaController.text.isEmpty) {
@@ -273,7 +270,7 @@ class _NovaImagemState extends State<NovaImagem> {
     Imagem image = Imagem(
       title: _tituloController.text,
       date: DateTime.now(),
-      idFolder: _selectedFolder!.id,
+      idFolder: _selectedFolder!,
     );
 
     ImageDAO imagedao = ImageDAO();

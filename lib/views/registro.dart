@@ -86,7 +86,7 @@ class _RegistroState extends State<Registro> {
                       Field(
                         text: "senha",
                         fieldController: _senhaController,
-        
+                        
                         width: size.width - 50,
                         height: size.height * 5 / 100,
                         validator: (value) {
@@ -110,11 +110,11 @@ class _RegistroState extends State<Registro> {
                           ),
                         obscureText: !_visibilidadeSenha,
                       ),
-        
+                        
                       Field(
                         text: "confirme sua senha",
                         fieldController: _confirmarSenhaController,
-        
+                        
                         width: size.width - 50,
                         height: size.height * 5 / 100,
                         validator: (value) {
@@ -138,7 +138,7 @@ class _RegistroState extends State<Registro> {
                           ),
                         obscureText: !_visibilidadeConfirmarSenha,
                       ),
-        
+                        
                       SizedBox(height: size.height * 1 / 100),
                       Column(
                         mainAxisAlignment: MainAxisAlignment.end,

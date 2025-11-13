@@ -11,6 +11,7 @@ import 'package:pintassilgo/models/Image/image.dart';
 import 'package:pintassilgo/models/Image/imageDAO.dart';
 import 'package:pintassilgo/models/Note/note.dart';
 import 'package:pintassilgo/models/Note/noteDAO.dart';
+import 'package:pintassilgo/views/novaImagem.dart';
 
 class Imageview extends StatefulWidget {
   final Imagem imagem;
@@ -60,7 +61,16 @@ class _ImageviewState extends State<Imageview> {
                                 style: TextStyle(fontSize: 60),
                               ),
                               IconButton(
-                                onPressed: () {},
+                                onPressed: () async {
+                                  await Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (BuildContext context) {
+                                        return NovaImagem(imageEdit: widget.imagem);
+                                      },
+                                    ),
+                                  );
+                                },
                                 icon: Icon(Icons.edit),
                               ),
                               IconButton(

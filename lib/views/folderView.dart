@@ -154,9 +154,9 @@ class _FolderViewState extends State<FolderView> {
                       return Row(
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: [
-                          Pinta(imagem: snapshot.data![index * 2]),
+                          Pinta(imagem: snapshot.data![index * 2], updateParent: update),
                           index * 2 + 1 < snapshot.data!.length
-                              ? Pinta(imagem: snapshot.data![index * 2 + 1])
+                              ? Pinta(imagem: snapshot.data![index * 2 + 1], updateParent: update)
                               : Container(width: size.width * 40 / 100),
                         ],
                       );
