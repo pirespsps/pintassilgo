@@ -32,6 +32,8 @@ class _FolderViewState extends State<FolderView> {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
 
+    FolderDAO folderDao = FolderDAO();
+
     Future<List<Imagem>> images = imageDao.imagesByFolder(
       widget.folder.id!,
       50,
@@ -95,8 +97,14 @@ class _FolderViewState extends State<FolderView> {
                   iconSize: size.width * 10 / 100,
                 ),
                 IconButton(
-                  onPressed: () {},
-                  icon: Icon(Icons.star),
+                  onPressed: () async {
+                      widget.folder.like();
+                      await folderDao.update(widget.folder, widget.folder.id!);
+                      
+                      setState(() {
+                      });
+                  },
+                  icon: widget.folder.isLiked ? Icon(Icons.star) : Icon(Icons.star_border),
                   iconSize: size.width * 10 / 100,
                 ),
               ],
