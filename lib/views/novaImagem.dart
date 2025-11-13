@@ -52,9 +52,16 @@ class _NovaImagemState extends State<NovaImagem> {
 
   XFile? _image;
 
+
   @override
-  void initState() async {
-    super.initState();
+  void dispose() {
+    super.dispose();
+    _tituloController.dispose();
+    _notaController.dispose();
+    _linksController.dispose();
+  }
+
+  Future<bool> verifyEdit() async {
     _foldersFuture = widget.getFolders();
 
     if (widget.imageEdit != null) {
@@ -79,138 +86,143 @@ class _NovaImagemState extends State<NovaImagem> {
           _image = XFile(file.path);
           _selectedFolder = folder;
         });
+
+        return true;
+      } else {
+        return false;
       }
+    } else {
+      return false;
     }
   }
 
   @override
-  void dispose() {
-    super.dispose();
-    _tituloController.dispose();
-    _notaController.dispose();
-    _linksController.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
+    
     Size size = MediaQuery.of(context).size;
+    Future<bool> isEdit = verifyEdit(); 
 
     return Scaffold(
-      body: Container(
-        color: MARROM_CLARO,
-        width: size.width,
-        height: size.height,
-        child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 40, horizontal: 3),
-          child: Column(
-            spacing: 10,
-            children: [
-              Text(
-                widget.imageEdit == null ? "nova imagem" : "editar imagem",
-                style: TextStyle(color: Colors.white),
-                textScaler: TextScaler.linear(3),
-              ),
-              Container(height: 20),
-              imageField(context, size),
-              Form(
-                key: _formkey,
-                child: Column(
-                  spacing: 10,
-                  children: [
-                    Field(
-                      text: "título",
-                      fieldController: _tituloController,
-                      width: size.width - 50,
-                      height: 65,
-                    ),
-
-                    ..._buildNewFields(size),
-
-                    Container(
-                      width: size.width - 50,
-                      decoration: BoxDecoration(
-                        color: CINZA,
-                        borderRadius: BorderRadius.circular(7),
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 3.0),
-                        child: FutureBuilder<List<Folder>>(
-                          future: _foldersFuture,
-                          builder: (context, snapshot) {
-                            if (snapshot.hasError) {
-                              return Padding(
-                                padding: const EdgeInsets.all(8),
-                                child: Text(
-                                  "Erro ao carregar pastas: ${snapshot.error}",
-                                ),
-                              );
-                            }
-
-                            final folders = snapshot.data ?? [];
-
-                            if (folders.isEmpty) {
-                              return Padding(
-                                padding: EdgeInsets.all(8),
-                                child: Text("Pastas vazias"),
-                              );
-                            }
-
-                            return DropdownButton<Folder>(
-                              dropdownColor: CINZA,
-                              style: TextStyle(color: MARROM),
-                              menuWidth: size.width - 10,
-                              icon: Padding(
-                                padding: EdgeInsets.only(
-                                  left: size.width - 140,
-                                  right: 10,
-                                ),
-                                child: Icon(
-                                  Icons.arrow_drop_down,
-                                  color: MARROM,
-                                  size: 40,
-                                ),
-                              ),
-                              value: _selectedFolder,
-                              items: folders.map((folder) {
-                                return DropdownMenuItem<Folder>(
-                                  value: folder,
-                                  child: Text(folder.name),
-                                );
-                              }).toList(),
-                              onChanged: (Folder? item) {
-                                setState(() {
-                                  _selectedFolder = item;
-                                });
-                              },
-                            );
-                          },
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      body: FutureBuilder(
+        future: isEdit,
+        builder: (context, asyncSnapshot) {
+          return Container(
+            color: MARROM_CLARO,
+            width: size.width,
+            height: size.height,
+            child: Padding(
+              padding: const EdgeInsets.symmetric(vertical: 40, horizontal: 3),
+              child: Column(
+                spacing: 10,
                 children: [
-                  FilledButton(
-                    onPressed: () {
-                      Navigator.pop(context);
-                    },
-                    child: Text("cancelar"),
+                  Text(
+                    widget.imageEdit == null ? "nova imagem" : "editar imagem",
+                    style: TextStyle(color: Colors.white),
+                    textScaler: TextScaler.linear(3),
                   ),
-                  FilledButton(
-                    onPressed: () => {sendForm(context)},
-                    child: widget.imageEdit == null
-                    ?Text("criar")
-                    :Text("salvar"),
+                  Container(height: 20),
+                  imageField(context, size),
+                  Form(
+                    key: _formkey,
+                    child: Column(
+                      spacing: 10,
+                      children: [
+                        Field(
+                          text: "título",
+                          fieldController: _tituloController,
+                          width: size.width - 50,
+                          height: 65,
+                        ),
+          
+                        ..._buildNewFields(size),
+          
+                        Container(
+                          width: size.width - 50,
+                          decoration: BoxDecoration(
+                            color: CINZA,
+                            borderRadius: BorderRadius.circular(7),
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 3.0),
+                            child: FutureBuilder<List<Folder>>(
+                              future: _foldersFuture,
+                              builder: (context, snapshot) {
+                                if (snapshot.hasError) {
+                                  return Padding(
+                                    padding: const EdgeInsets.all(8),
+                                    child: Text(
+                                      "Erro ao carregar pastas: ${snapshot.error}",
+                                    ),
+                                  );
+                                }
+          
+                                final folders = snapshot.data ?? [];
+          
+                                if (folders.isEmpty) {
+                                  return Padding(
+                                    padding: EdgeInsets.all(8),
+                                    child: Text("Pastas vazias"),
+                                  );
+                                }
+          
+                                return DropdownButton<Folder>(
+                                  dropdownColor: CINZA,
+                                  style: TextStyle(color: MARROM),
+                                  menuWidth: size.width - 10,
+                                  icon: Padding(
+                                    padding: EdgeInsets.only(
+                                      left: size.width - 140,
+                                      right: 10,
+                                    ),
+                                    child: Icon(
+                                      Icons.arrow_drop_down,
+                                      color: MARROM,
+                                      size: 40,
+                                    ),
+                                  ),
+                                  value: _selectedFolder,
+                                  items: folders.map((folder) {
+                                    return DropdownMenuItem<Folder>(
+                                      value: folder,
+                                      child: Text(folder.name),
+                                    );
+                                  }).toList(),
+                                  onChanged: (Folder? item) {
+                                    setState(() {
+                                      _selectedFolder = item;
+                                    });
+                                  },
+                                );
+                              },
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+          
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      FilledButton(
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
+                        child: Text("cancelar"),
+                      ),
+                      FilledButton(
+                        onPressed: () => {sendForm(context)},
+                        child: widget.imageEdit == null
+                        ?Text("criar")
+                        :Text("salvar"),
+                      ),
+                    ],
                   ),
                 ],
               ),
-            ],
-          ),
-        ),
+            ),
+          );
+        }
       ),
     );
   }

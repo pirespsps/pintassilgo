@@ -30,16 +30,16 @@ class UserDAO extends GenericDAO<User> {
 
   } 
 
-  Future<bool> login(User user) async{
+  Future<User?> login(User user) async{
     final Database db = await DatabaseHelper.instance.database;
 
     var resultado = await db.rawQuery(
       "select * from tbUser where name = '${user.name}' AND password = '${user.password}'"
     );
     if (resultado.isNotEmpty){
-      return true;
+      return User.fromMap(resultado.first);
     }else{
-      return false;
+      return null;
     }
   }
 

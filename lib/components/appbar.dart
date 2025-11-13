@@ -7,7 +7,9 @@ import 'package:pintassilgo/views/novaImagem.dart';
 import 'package:pintassilgo/views/novaPasta.dart';
 
 class Appbar extends StatefulWidget {
-  const Appbar({super.key});
+  const Appbar({super.key, required this.updateParent});
+
+  final Function updateParent;
 
   @override
   State<Appbar> createState() => _AppbarState();
@@ -67,20 +69,24 @@ class _AppbarState extends State<Appbar> {
                                               icon: Icon(Icons.close),
                                             ),
                                             TextButton(
-                                              onPressed: () {
+                                              onPressed: () async {
                                                 removeOverlayAdd();
-                                                Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) {
+                                                await Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) {
                                                   return NovaImagem();
                                                 }));
+
+                                                widget.updateParent();
                                               }, 
                                               child: Text("Enviar nova imagem")
                                             ),
                                             TextButton(
-                                              onPressed: () {
+                                              onPressed: () async {
                                                 removeOverlayAdd();
-                                                Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) {
+                                                await Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) {
                                                   return NovaPasta();
                                                 }));
+
+                                                widget.updateParent();
                                               }, 
                                               child: Text("Criar nova pasta")
                                             )
@@ -153,28 +159,26 @@ class _AppbarState extends State<Appbar> {
                   ),
                   Positioned(
                     left: size.width * 70 / 100,
-                    child: Expanded(
-                      child: Row(
-                        children: [
-                          IconButton(
-                            onPressed: () => {},
-                            icon: Icon(Icons.filter_list),
-                            color: colorScheme.onSecondary,
-                            iconSize: size.width * 10 / 100,
-                          ),
-                          IconButton(
-                            onPressed: () => {
-                              Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) {
-                                  return Config();
-                              }))
-                            },
-                            icon: Icon(Icons.settings),
-                            color: colorScheme.onSecondary,
-                            iconSize: size.width * 10 / 100,
-                          ),
-                        ],
-                      ),
-                    )
+                    child: Row(
+                      children: [
+                        IconButton(
+                          onPressed: () => {},
+                          icon: Icon(Icons.filter_list),
+                          color: colorScheme.onSecondary,
+                          iconSize: size.width * 10 / 100,
+                        ),
+                        IconButton(
+                          onPressed: () => {
+                            Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) {
+                                return Config();
+                            }))
+                          },
+                          icon: Icon(Icons.settings),
+                          color: colorScheme.onSecondary,
+                          iconSize: size.width * 10 / 100,
+                        ),
+                      ],
+                    ),
                   )
                 ],
               ),

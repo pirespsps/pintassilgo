@@ -78,24 +78,24 @@ class _NovaPasta extends State<NovaPasta> {
 
                       FolderDAO folderDAO = FolderDAO();
 
-                      if(widget.folder != null){
+                      if(widget.folder == null){
 
-                      final storage = FlutterSecureStorage();
+                        final storage = FlutterSecureStorage();
 
-                      String? id = await storage.read(key: "user");
+                        String? id = await storage.read(key: "user");
 
-                      Folder folder = Folder(name: _nomeController.text);
-                      folder.idUser = int.parse(id!);
+                        Folder folder = Folder(name: _nomeController.text);
+                        folder.idUser = int.parse(id!);
 
-                      folderDAO.add(folder);
+                        folderDAO.add(folder);
                       
                       }else{
 
-                       Folder? pasta = await folderDAO.find(widget.folder!.id);
+                        Folder? pasta = await folderDAO.find(widget.folder!.id);
 
-                       pasta!.name = _nomeController.text;
+                        pasta!.name = _nomeController.text;
 
-                       folderDAO.update(pasta, pasta.id);
+                        folderDAO.update(pasta, pasta.id);
 
                       }
 

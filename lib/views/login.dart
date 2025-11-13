@@ -28,7 +28,10 @@ class _LoginState extends State<Login> {
 
   login() async {
     var resposta = await dao.login(User(name: _user, password: _senha));
-    if (resposta == true){
+    if (resposta != null){
+      var id = resposta.id!;
+      final storage = FlutterSecureStorage();
+      await storage.write(key: "user", value: '$id');
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(builder: (context) => const MyHomePage()),
@@ -44,6 +47,7 @@ class _LoginState extends State<Login> {
   void dispose(){
     _nomeController.dispose();
     _senhaController.dispose();
+    super.dispose();
   }
 
   @override

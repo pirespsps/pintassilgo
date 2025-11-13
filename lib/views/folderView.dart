@@ -12,6 +12,13 @@ class FolderView extends StatefulWidget {
 }
 
 class _FolderViewState extends State<FolderView> {
+
+  void update() {
+    setState(() {
+      
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -19,7 +26,7 @@ class _FolderViewState extends State<FolderView> {
     return Scaffold(
       body: Column(
         children: [
-          Appbar(),
+          Appbar(updateParent: update,),
           SizedBox(
             width: size.width,
             child: Wrap(
