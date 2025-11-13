@@ -4,9 +4,8 @@ class Imagem {
   DateTime date;
   int? idFolder;
   bool isFavorite;
-  String fileExtension;
 
-  Imagem({required this.title, required this.date, required this.idFolder, this.isFavorite = false, this.id, required this.fileExtension}); 
+  Imagem({required this.title, required this.date, required this.idFolder, this.isFavorite = false, this.id}); 
 
   factory Imagem.fromMap(Map<String, dynamic> json) => Imagem(
     id: json['id'],
@@ -14,7 +13,6 @@ class Imagem {
     date: DateTime.parse(json['date']),
     idFolder: json['idFolder'],
     isFavorite: json['isFavorite'] == 0 ? false : true,
-    fileExtension: json['fileExtension'],
   );
 
   Map<String, dynamic> toMap(){
@@ -24,7 +22,6 @@ class Imagem {
       'date' : date.toIso8601String(),
       'idFolder' : idFolder,
       'isFavorite' : isFavorite,
-      'fileExtension' : fileExtension,
     };
   }
 

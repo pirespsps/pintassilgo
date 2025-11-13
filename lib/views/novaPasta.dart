@@ -48,7 +48,7 @@ class _NovaPasta extends State<NovaPasta> {
             spacing: 10,
             children: [
               Text(
-                (widget.folder == null?  "editar pasta" : "nova pasta"),
+                (widget.folder == null?  "nova pasta" : "editar pasta"),
                 textScaler: TextScaler.linear(4),
                 style: TextStyle(color: MARROM),
               ),
