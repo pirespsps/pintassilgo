@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:flex_color_picker/flex_color_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:path/path.dart';
@@ -93,7 +94,7 @@ class _FolderViewState extends State<FolderView> {
                     showDialog<String>(
                       context: context,
                       builder: (context) =>
-                          getDialog(context, widget.folder.id!),
+                          deleteDialog(context, widget.folder.id!),
                     );
                     setState(() {});
                   },
@@ -102,42 +103,58 @@ class _FolderViewState extends State<FolderView> {
                 ),
                 IconButton(
                   onPressed: () async {
-                      widget.folder.like();
-                      await folderDao.update(widget.folder, widget.folder.id!);
-                      
-                      setState(() {
-                      });
+                    widget.folder.like();
+                    await folderDao.update(widget.folder, widget.folder.id!);
+
+                    setState(() {});
                   },
-                  icon: widget.folder.isLiked ? Icon(Icons.star) : Icon(Icons.star_border),
+                  icon: widget.folder.isLiked
+                      ? Icon(Icons.star)
+                      : Icon(Icons.star_border),
+                  iconSize: size.width * 10 / 100,
+                ),
+                IconButton(
+                  onPressed: () async {
+                    showDialog<String>(
+                      context: context,
+                      builder: (context) =>
+                          tagDialog(context, widget.folder.id!, size),
+                    );
+                    setState(() {});
+                  },
+                  icon: Icon(Icons.tag),
                   iconSize: size.width * 10 / 100,
                 ),
               ],
             ),
           ),
-          Expanded(
-            child: FutureBuilder(
-              future: tags,
-              builder: (context, snapshot) {
-                if (snapshot.data != null) {
-                  return ListView.builder(
-                    itemCount: snapshot.data!.length,
-                    itemBuilder: (context, index) {
-                      return Row(
-                        children: [
-                          Text(
-                            snapshot.data![index].name,
-                            style: TextStyle(
-                              //backgroundColor: Color.fromARGB(snapshot.data[index].color), muda cor aq!
+          SizedBox(
+            height: 20,
+            child: Expanded(
+              child: FutureBuilder(
+                future: tags,
+                builder: (context, snapshot) {
+                  if (snapshot.data != null) {
+                    return ListView.builder(
+                      itemCount: snapshot.data!.length,
+                      itemBuilder: (context, index) {
+                        return Row(
+                          children: [
+                            Text(
+                              snapshot.data![index].name,
+                              style: TextStyle(
+                                //backgroundColor: Color.fromARGB(snapshot.data[index].color), muda cor aq!
+                              ),
                             ),
-                          ),
-                        ],
-                      );
-                    },
-                  );
-                } else {
-                  return Text("Sem tags para a pasta!");
-                }
-              },
+                          ],
+                        );
+                      },
+                    );
+                  } else {
+                    return Text("Sem tags para a pasta!");
+                  }
+                },
+              ),
             ),
           ),
           Expanded(
@@ -174,9 +191,62 @@ class _FolderViewState extends State<FolderView> {
       ),
     );
   }
+
+  
+Dialog tagDialog(context, int id, size) {
+  ColorScheme colorScheme = Theme.of(context).colorScheme;
+  return Dialog(
+    child: FutureBuilder(
+      future: tagDAO.list(),
+      builder: (context, snapshot) {
+        if (snapshot.data != null) {
+          return SizedBox(
+            width: size.width * 75 / 100,
+            height: size.height * 50 / 100,
+            child: ListView.builder(
+              itemCount: snapshot.data!.length,
+              itemBuilder: (context, index) {
+                return Container(
+                  width: size.width * 75 / 100,
+                  height: size.height * 10 / 100,
+                  decoration: BoxDecoration(
+                    color: snapshot.data![index].color.toColor,
+                  ),
+                  child: Row(
+                    children: [
+                      IconButton(
+                        onPressed: () {},
+                        icon: Icon(Icons.circle_outlined),
+                      ),
+                      Material(
+                        color: Colors.transparent,
+                        child: Text(
+                          snapshot.data![index].name,
+
+                          style: TextStyle(
+                            color: Colors.white,
+                            textBaseline: null,
+                            fontSize: 15,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                );
+              },
+            ),
+          );
+        } else {
+          return Container();
+        }
+      },
+    ),
+  );
 }
 
-Dialog getDialog(context, int id) {
+}
+
+Dialog deleteDialog(context, int id) {
   return Dialog(
     child: Padding(
       padding: EdgeInsetsGeometry.all(15.0),

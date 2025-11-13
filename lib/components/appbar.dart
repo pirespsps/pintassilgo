@@ -220,7 +220,6 @@ class _AppbarState extends State<Appbar> {
                                                       },
                                                       icon: Icon(Icons.close),
                                                     ),
-
                                                     FutureBuilder(
                                                       future: tagDao.list(), 
                                                       builder: (context, snapshot) {
