@@ -10,7 +10,6 @@ class Field extends StatefulWidget {
   final String? Function(String?)? onSaved;
   final Widget? suffixIcon;
   final bool? obscureText;
-  final String? initialValue;  
 
   const Field({
     super.key,
@@ -22,7 +21,6 @@ class Field extends StatefulWidget {
     this.onSaved,
     this.suffixIcon,
     this.obscureText,
-    this.initialValue
   });
 
   @override
