@@ -43,7 +43,7 @@ class UserDAO extends GenericDAO<User> {
     }
   }
 
-  Future <int> singup(User user) async{
+  Future <int> registro(User user) async{
     final Database db = await DatabaseHelper.instance.database;
 
     return db.insert('tbUser', user.toMap());

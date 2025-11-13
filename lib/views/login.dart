@@ -19,12 +19,26 @@ class Login extends StatefulWidget {
 
 class _LoginState extends State<Login> {
   final _formKey = GlobalKey<FormState>();
-  
+  final dao = UserDAO();
   String _user = '', _senha = '';
-  bool _isLoginTrue = false;
+  bool _isLoginErrado = false;
   bool _visibilidadeSenha = false;
   final TextEditingController _nomeController = TextEditingController();
   final TextEditingController _senhaController = TextEditingController();
+
+  login(){
+    var resposta = dao.login(User(name: _user, password: _senha));
+    if (resposta == true){
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => const MyHomePage()),
+      );      
+    }else{
+      _isLoginErrado = true;
+      setState(() {
+      });
+    }
+  }
 
   @override
   void dispose(){
@@ -69,6 +83,10 @@ class _LoginState extends State<Login> {
                       height: size.width * 10/100,
                     ),
                     Text('login', style: TextStyle( fontSize: 50, color: Theme.of(context).colorScheme.onPrimary, decoration: TextDecoration.none)),
+                    _isLoginErrado? Text(
+                        "usuário ou senha incorretos",
+                        style: TextStyle(color: Colors.red)
+                      ) : SizedBox(),
                     SizedBox(
                       height: size.width * 7/100,
                     ),
@@ -130,48 +148,10 @@ class _LoginState extends State<Login> {
                             style: TextStyle(fontSize: 20),
                           ),
                           onPressed: () async {
-                            //entrar no site
                           if (_formKey.currentState!.validate()){
-                            _formKey.currentState!.save();
-                          }
-                            User user = User(
-                              name: _nomeController.text,
-                              password: _senhaController.text //criptografia
-                            );
-                            
-                            UserDAO userDAO = UserDAO();
-                            int id = await userDAO.add(user);
-                            User? userFinal = await userDAO.getByNameAndPassword(_nomeController.text, _senhaController.text);
-        
-                              if(userFinal == null){
-                                AlertDialog(
-                                  title: const Text('USUARIO OU SENHA INVÁLIDOS'),
-                                  content: const SingleChildScrollView(
-                                    child: ListBody(
-                                      children: <Widget>[
-                                        Text('tente novamente'),
-                                      ],
-                                    ),
-                                  ),
-                                  actions: <Widget>[
-                                    TextButton(
-                                      child: const Text('continuar'),
-                                      onPressed: () {
-                                        Navigator.of(context).pop();
-                                      },
-                                    ),
-                                  ],
-                                );
-                              }
-
-                            final storage = FlutterSecureStorage();
-                            storage.write(key: "user", value: user!.id.toString());
-        
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(builder: (context) => const MyHomePage()),
-                              );                          
-                              },
+                            login();
+                          }   
+                          },
                         ),
                         Padding(
                           padding: const EdgeInsets.only(bottom: 5),

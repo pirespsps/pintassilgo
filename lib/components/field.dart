@@ -62,7 +62,6 @@ class _FieldFormState extends State<Field> {
                   style: TextStyle(color: Colors.black),
                   cursorColor: Colors.black,
                   cursorHeight: 15,
-                  initialValue: widget.initialValue ?? "",
                   validator: widget.validator ?? 
                   (value){
                     if(value == null || value.isEmpty){
