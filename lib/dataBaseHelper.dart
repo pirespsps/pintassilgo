@@ -16,7 +16,7 @@ class DatabaseHelper {
     await db.execute('''
       CREATE TABLE tbUser(
       id INTEGER PRIMARY KEY AUTOINCREMENT, 
-      name TEXT NOT NULL,
+      name UNIQUE TEXT NOT NULL,
       password TEXT NOT NULL
       ); ''');
 

@@ -18,7 +18,6 @@ class Registro extends StatefulWidget {
 class _RegistroState extends State<Registro> {
   final _formKey = GlobalKey<FormState>();
   final dao = UserDAO();
-  String _user = '', _senha = '', _confirmarSenha = '';
   bool _visibilidadeSenha = false;
   bool _visibilidadeConfirmarSenha = false;
   final TextEditingController _nomeController = TextEditingController();
@@ -83,7 +82,6 @@ class _RegistroState extends State<Registro> {
                             return null;
                           }
                         },
-                        onSaved: (value) => _user = value.toString(),
                       ),
                       Field(
                         text: "senha",
@@ -100,7 +98,6 @@ class _RegistroState extends State<Registro> {
                             return null;
                           }
                         },
-                        onSaved: (value) => _senha = value.toString(),
                         suffixIcon: IconButton(
                           icon: Icon(
                             _visibilidadeSenha ? Icons.visibility_off : Icons.visibility,
@@ -129,7 +126,6 @@ class _RegistroState extends State<Registro> {
                             return null;
                           }
                         },
-                        onSaved: (value) => _confirmarSenha = value.toString(),
                         suffixIcon: IconButton(
                           icon: Icon(
                             _visibilidadeConfirmarSenha ? Icons.visibility_off : Icons.visibility,
@@ -162,7 +158,7 @@ class _RegistroState extends State<Registro> {
                                 
                               });
                               if (_formKey.currentState!.validate()){
-                                dao.registro(User(name: _user, password: _senha))
+                                dao.registro(User(name: _nomeController.text, password: _senhaController.text))
                                 .whenComplete((){
                                   Navigator.push(
                                   context,

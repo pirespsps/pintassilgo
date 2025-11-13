@@ -20,14 +20,13 @@ class Login extends StatefulWidget {
 class _LoginState extends State<Login> {
   final _formKey = GlobalKey<FormState>();
   final dao = UserDAO();
-  String _user = '', _senha = '';
   bool _isLoginErrado = false;
   bool _visibilidadeSenha = false;
   final TextEditingController _nomeController = TextEditingController();
   final TextEditingController _senhaController = TextEditingController();
 
   login() async {
-    var resposta = await dao.login(User(name: _user, password: _senha));
+    var resposta = await dao.login(User(name: _nomeController.text, password: _senhaController.text));
     if (resposta != null){
       var id = resposta.id!;
       final storage = FlutterSecureStorage();
@@ -108,7 +107,6 @@ class _LoginState extends State<Login> {
                             return null;
                           }
                         },
-                        onSaved: (value) => _user = value.toString(),
                       ),
                     ),
                     SizedBox(
@@ -127,7 +125,6 @@ class _LoginState extends State<Login> {
                             return null;
                           }
                         },
-                        onSaved: (value) => _senha = value.toString(),
                         suffixIcon: IconButton(
                             icon: Padding(
                               padding: const EdgeInsets.only(bottom: 10),
