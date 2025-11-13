@@ -13,7 +13,7 @@ class Imagem {
     title: json['title'],
     date: DateTime.parse(json['date']),
     idFolder: json['idFolder'],
-    isFavorite: json['isFavorite'],
+    isFavorite: json['isFavorite'] == 0 ? false : true,
     fileExtension: json['fileExtension'],
   );
 

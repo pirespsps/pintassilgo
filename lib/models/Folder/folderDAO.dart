@@ -40,19 +40,16 @@ class FolderDAO extends GenericDAO<Folder> {
 
     ImageDAO imageDao = ImageDAO();
 
-    print('Puxando pastas do banco...');
-
     List<Folder> objectList = objects.isNotEmpty
-    ? objects.map((item) {
-        var folder = fromMap(item);
-        return folder;
-      }).toList()
+    ? objects.map((item) => fromMap(item)).toList()
     : [];
 
     for (int i = 0; i < objectList.length; i++) {
       var images = await imageDao.imagesByFolder(objectList[i].id!, 4);
       objectList[i].images = images;
     }
+
+    print('Puxando pastas do banco... ${objectList.length}');
 
     return objectList;
   }

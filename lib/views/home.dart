@@ -44,7 +44,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
               if (userId != null) {
 
-                Future<List<Folder>> folders = folderDao.foldersByUser(int.parse(userId));
+                Future<List<Folder>> folders = folderDao.foldersByUserView(int.parse(userId));
 
                 return FutureBuilder(
                   future: folders, 
@@ -57,7 +57,8 @@ class _MyHomePageState extends State<MyHomePage> {
                           itemBuilder: (context, index) {
                             return Center(
                               child: Pasta(
-                                nome: folderList[index].name
+                                nome: folderList[index].name,
+                                pasta: folderList[index],
                               ),
                             );
                           },

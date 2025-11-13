@@ -35,7 +35,7 @@ class DatabaseHelper {
       id INTEGER PRIMARY KEY AUTOINCREMENT,
       title TEXT NOT NULL,
       date TEXT,
-      idFolder TEXT NOT NULL, 
+      idFolder INTEGER NOT NULL, 
       isFavorite INTEGER,
       fileExtension TEXT NOT NULL,
 

@@ -3,14 +3,15 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:pintassilgo/models/Folder/folder.dart';
 import 'package:pintassilgo/models/Image/image.dart';
 import 'package:pintassilgo/views/folderView.dart';
 
 class Pasta extends StatefulWidget {
   final String nome;
-  final List<Imagem>? images;
+  final Folder pasta;
 
-  const Pasta({super.key, required this.nome, this.images});
+  const Pasta({super.key, required this.nome, required this.pasta});
 
   @override
   State<Pasta> createState() => _PastaState();
@@ -39,7 +40,7 @@ class _PastaState extends State<Pasta> {
               }, 
               child: Stack(
                 children: [
-                  for (int i = 0; i < (widget.images != null ? widget.images!.length : 0); i++) FutureBuilder(
+                  for (int i = 0; i < (widget.pasta.images != null ? widget.pasta.images!.length : 0); i++) FutureBuilder(
                     future: documentsDirectory,
                     builder: (context, asyncSnapshot) {
                       return Positioned(
@@ -47,25 +48,27 @@ class _PastaState extends State<Pasta> {
                         child: Container(
                           height: size.height * 20 / 100,
                           width: size.height * 20 / 100,
-                        
+
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(40),
-                          ),
-                      
-                          child: Image.file(
-                            File(
-                              join(
-                                asyncSnapshot.data!.path,
-                                "images/",
-                                widget.images![i].id!.toString() + ".png",
-                              ),
-                            )
+                            image: asyncSnapshot.data != null ? DecorationImage(
+                              fit: BoxFit.cover,
+                              image: FileImage(
+                                File(
+                                  join(
+                                    asyncSnapshot.data!.path,
+                                    "images/",
+                                    widget.pasta.images![i].id!.toString() + ".png",
+                                  ),
+                                )
+                              )
+                            ) : null
                           ),
                         ),
                       );
                     }
                   ),
-                  widget.images != null ? Container() : Positioned(
+                  widget.pasta.images != null ? Container() : Positioned(
                     child: Container(
                       height: size.height * 20 / 100,
                       width: size.height * 80 / 100,
