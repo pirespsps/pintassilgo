@@ -15,7 +15,8 @@ import 'package:pintassilgo/models/Note/note.dart';
 import 'package:pintassilgo/models/Note/noteDAO.dart';
 
 class NovaImagem extends StatefulWidget {
-  const NovaImagem({super.key});
+  final image_model.Image? imageEdit;
+  const NovaImagem({super.key, this.imageEdit});
 
   @override
   State<NovaImagem> createState() => _NovaImagemState();
@@ -28,19 +29,15 @@ class NovaImagem extends StatefulWidget {
   Future<List<Folder>> getFolders() async {
     final FolderDAO folderDAO = FolderDAO();
     final id = await getUserId();
+
     if (id == null || id.isEmpty) {
-      print("Id antes de parse null");
+      print("Id null");
       return [];
     }
 
     final userId = int.tryParse(id);
 
-    if(userId == null){
-      print("Id depois de parse null");
-      return [];
-    }
-
-    return await folderDAO.foldersByUser(userId);
+    return await folderDAO.foldersByUser(userId!);
   }
 }
 
@@ -56,9 +53,34 @@ class _NovaImagemState extends State<NovaImagem> {
   XFile? _image;
 
   @override
-  void initState() {
+  void initState() async {
     super.initState();
     _foldersFuture = widget.getFolders();
+
+    if (widget.imageEdit != null) {
+      _tituloController.text = widget.imageEdit!.title;
+
+      final folderDAO = FolderDAO();
+      final folder = await folderDAO.find(widget.imageEdit!.idFolder);
+
+      final Directory dir = await getApplicationDocumentsDirectory();
+      final String path = join(
+        dir.path,
+        "/images/",
+        widget.imageEdit!.id.toString(),
+        ".",
+        widget.imageEdit!.fileExtension,
+      );
+
+      final file = File(path);
+
+      if (await file.exists()) {
+        setState(() {
+          _image = XFile(file.path);
+          _selectedFolder = folder;
+        });
+      }
+    }
   }
 
   @override
@@ -84,7 +106,7 @@ class _NovaImagemState extends State<NovaImagem> {
             spacing: 10,
             children: [
               Text(
-                "nova foto",
+                widget.imageEdit == null ? "nova imagem" : "editar imagem",
                 style: TextStyle(color: Colors.white),
                 textScaler: TextScaler.linear(3),
               ),
@@ -102,30 +124,7 @@ class _NovaImagemState extends State<NovaImagem> {
                       height: 65,
                     ),
 
-                    Field(
-                      text: "titulo da nota",
-                      fieldController: _notaController,
-                      width: size.width - 50,
-                      height: 65,
-                    ),
-
-                    Field(
-                      text: "links",
-                      fieldController: _linksController,
-                      width: size.width - 50,
-                      height: 65,
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return "Insira um valor, campo obrigatório";
-                        }
-
-                        if (!value.contains(".") || !value.contains("/")) {
-                          return "Insira um link válido";
-                        }
-
-                        return null;
-                      },
-                    ),
+                    ..._buildNewFields(size),
 
                     Container(
                       width: size.width - 50,
@@ -152,9 +151,7 @@ class _NovaImagemState extends State<NovaImagem> {
                             if (folders.isEmpty) {
                               return Padding(
                                 padding: EdgeInsets.all(8),
-                                child: Text(
-                                  "Pastas vazias",
-                                ),
+                                child: Text("Pastas vazias"),
                               );
                             }
 
@@ -205,7 +202,9 @@ class _NovaImagemState extends State<NovaImagem> {
                   ),
                   FilledButton(
                     onPressed: () => {sendForm(context)},
-                    child: Text("criar"),
+                    child: widget.imageEdit == null
+                    ?Text("criar")
+                    :Text("salvar"),
                   ),
                 ],
               ),
@@ -216,11 +215,44 @@ class _NovaImagemState extends State<NovaImagem> {
     );
   }
 
+  List<Widget> _buildNewFields(size) {
+    
+    if(widget.imageEdit != null){
+      return [];
+    }
+
+    return [
+      Field(
+        text: "titulo da nota",
+        fieldController: _notaController,
+        width: size.width - 50,
+        height: 65,
+      ),
+      Field(
+        text: "links",
+        fieldController: _linksController,
+        width: size.width - 50,
+        height: 65,
+        validator: (value) {
+          if (value == null || value.isEmpty) {
+            return "Insira um valor, campo obrigatório";
+          }
+
+          if (!value.contains(".") || !value.contains("/")) {
+            return "Insira um link válido";
+          }
+
+          return null;
+        },
+      ),
+    ];
+  }
+
   sendForm(context) async {
     if (_image == null) {
       ScaffoldMessenger.of(
         context,
-      ).showSnackBar( SnackBar(content: Text('Selecione uma imagem')));
+      ).showSnackBar(SnackBar(content: Text('Selecione uma imagem')));
       return;
     }
 
@@ -232,6 +264,7 @@ class _NovaImagemState extends State<NovaImagem> {
       title: _tituloController.text,
       date: DateTime.now(),
       idFolder: _selectedFolder!.id,
+      fileExtension: _image!.mimeType!,
     );
 
     ImageDAO imagedao = ImageDAO();
