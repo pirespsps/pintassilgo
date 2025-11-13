@@ -4,7 +4,6 @@ import 'package:pintassilgo/components/pasta.dart';
 import 'package:pintassilgo/dataBaseHelper.dart';
 import 'package:pintassilgo/views/login.dart';
 import 'package:pintassilgo/views/novaPasta.dart';
-import 'package:pintassilgo/views/novaTag.dart';
 import 'package:pintassilgo/views/registro.dart';
 
 const AMARELO = Color.fromARGB(255, 255, 213, 42);//"#ffd52a" 
@@ -36,7 +35,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         colorScheme: ColorScheme(surface: MARROM, primary: BRANCO, secondary: MARROM_CLARO, brightness: Brightness.light, error: VERMELHO, onError: BRANCO, onPrimary: Colors.black, onSecondary: BRANCO, onSurface: BRANCO),
       ),
-      home: NovaTag(),
+      home: Login(),
     );
   }
 }

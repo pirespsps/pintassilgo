@@ -47,7 +47,7 @@ class _AppbarState extends State<Appbar> {
                           ColorScheme colorScheme = Theme.of(context).colorScheme;
 
                           return Column(
-                            crossAxisAlignment: CrossAxisAlignment.stretch,
+                            crossAxisAlignment: CrossAxisAlignment.end,
                             children: [
                               Expanded(
                                 child: Container(
@@ -55,55 +55,59 @@ class _AppbarState extends State<Appbar> {
                                     color: Color.fromARGB(120, 0, 0, 0)
                                   ),
                                   child: Center(
-                                    child: Padding(
-                                      padding: EdgeInsets.fromLTRB(0.0, size.height * 0.1, 0.0, size.height * 0.1),
-                                      child: Container(
-                                        decoration: BoxDecoration(
-                                          color: colorScheme.surface
+                                    child: SizedBox(
+                                      height: size.height * 50 / 100,
+                                      child: Padding(
+                                        padding: EdgeInsets.fromLTRB(0.0, size.height * 0.1, 0.0, size.height * 0.1),
+                                        child: Container(
+                                          decoration: BoxDecoration(
+                                            borderRadius: BorderRadius.circular(10),
+                                            color: colorScheme.surface
+                                          ),
+                                          child: Column(
+                                            children: [
+                                              IconButton(
+                                                onPressed: () {
+                                                  removeOverlayAdd();
+                                                },
+                                                icon: Icon(Icons.close),
+                                              ),
+                                              TextButton(
+                                                onPressed: () async {
+                                                  removeOverlayAdd();
+                                                  await Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) {
+                                                    return NovaImagem();
+                                                  }));
+                                      
+                                                  widget.updateParent();
+                                                }, 
+                                                child: Text("enviar nova imagem")
+                                              ),
+                                              TextButton(
+                                                onPressed: () async {
+                                                  removeOverlayAdd();
+                                                  await Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) {
+                                                    return NovaPasta();
+                                                  }));
+                                      
+                                                  widget.updateParent();
+                                                }, 
+                                                child: Text("criar nova pasta")
+                                              ),
+                                              TextButton(
+                                                onPressed: () async {
+                                                  removeOverlayAdd();
+                                                  await Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) {
+                                                    return NovaTag();
+                                                  }));
+                                      
+                                                  widget.updateParent();
+                                                }, 
+                                                child: Text("criar nova tag")
+                                              ),
+                                            ],
+                                          )
                                         ),
-                                        child: Column(
-                                          children: [
-                                            IconButton(
-                                              onPressed: () {
-                                                removeOverlayAdd();
-                                              },
-                                              icon: Icon(Icons.close),
-                                            ),
-                                            TextButton(
-                                              onPressed: () async {
-                                                removeOverlayAdd();
-                                                await Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) {
-                                                  return NovaImagem();
-                                                }));
-
-                                                widget.updateParent();
-                                              }, 
-                                              child: Text("Enviar nova imagem")
-                                            ),
-                                            TextButton(
-                                              onPressed: () async {
-                                                removeOverlayAdd();
-                                                await Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) {
-                                                  return NovaPasta();
-                                                }));
-
-                                                widget.updateParent();
-                                              }, 
-                                              child: Text("Criar nova pasta")
-                                            ),
-                                            TextButton(
-                                              onPressed: () async {
-                                                removeOverlayAdd();
-                                                await Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) {
-                                                  return NovaTag();
-                                                }));
-
-                                                widget.updateParent();
-                                              }, 
-                                              child: Text("Criar nova tag")
-                                            ),
-                                          ],
-                                        )
                                       ),
                                     ),
                                   ),
