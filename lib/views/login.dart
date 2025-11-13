@@ -94,49 +94,55 @@ class _LoginState extends State<Login> {
                     SizedBox(
                       height: size.width * 7/100,
                     ),
-                    Field(
-                      text: "usuário",
-                      fieldController: _nomeController,
-                      width: size.width * 85 / 100,
-                      height: size.height * 5 / 100,
-                      validator: (value){
-                        if(value == null || value.trim().isEmpty ){
-                          return 'este campo é obrigatório';
-                        }else{
-                          return null;
-                        }
-                      },
-                      onSaved: (value) => _user = value.toString(),
-                    ),
-                    Field(
-                      text: "senha",
-                      fieldController: _senhaController,
-                      width: size.width * 85 / 100,
-                      height: size.height * 5 / 100,
-                      validator: (value){
-                        if(value == null || value.trim().isEmpty ){
-                          return 'este campo é obrigatório';
-                        }else if(value.length < 6){
-                          return 'a senha deve ter no mínimo 6 caracteres';
-                        }else{
-                          return null;
-                        }
-                      },
-                      onSaved: (value) => _senha = value.toString(),
-                      suffixIcon: IconButton(
-                          icon: Padding(
-                            padding: const EdgeInsets.only(bottom: 10),
-                            child: Icon(
-                              _visibilidadeSenha ? Icons.visibility_off : Icons.visibility,
-                              color: Theme.of(context).colorScheme.onPrimary),
-                          ) ,
-                          onPressed: (){
-                            setState(() {
-                              _visibilidadeSenha = !_visibilidadeSenha;
-                            });
-                          }, 
+                    SizedBox(
+                      height: size.height * 10/100,
+                      child: Field(
+                        text: "usuário",
+                        fieldController: _nomeController,
+                        width: size.width * 85 / 100,
+                        height: size.height * 5 / 100,
+                        validator: (value){
+                          if(value == null || value.trim().isEmpty ){
+                            return 'este campo é obrigatório';
+                          }else{
+                            return null;
+                          }
+                        },
+                        onSaved: (value) => _user = value.toString(),
                       ),
-                      obscureText: !_visibilidadeSenha,
+                    ),
+                    SizedBox(
+                      height: size.height * 10/100,
+                      child: Field(
+                        text: "senha",
+                        fieldController: _senhaController,
+                        width: size.width * 85 / 100,
+                        height: size.height * 5 / 100,
+                        validator: (value){
+                          if(value == null || value.trim().isEmpty ){
+                            return 'este campo é obrigatório';
+                          }else if(value.length < 6){
+                            return 'a senha deve ter no mínimo 6 caracteres';
+                          }else{
+                            return null;
+                          }
+                        },
+                        onSaved: (value) => _senha = value.toString(),
+                        suffixIcon: IconButton(
+                            icon: Padding(
+                              padding: const EdgeInsets.only(bottom: 10),
+                              child: Icon(
+                                _visibilidadeSenha ? Icons.visibility_off : Icons.visibility,
+                                color: Theme.of(context).colorScheme.onPrimary),
+                            ) ,
+                            onPressed: (){
+                              setState(() {
+                                _visibilidadeSenha = !_visibilidadeSenha;
+                              });
+                            }, 
+                        ),
+                        obscureText: !_visibilidadeSenha,
+                      ),
                     ),
                     SizedBox(
                       height: size.width * 10/100,

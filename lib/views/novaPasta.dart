@@ -45,6 +45,7 @@ class _NovaPasta extends State<NovaPasta> {
             color: CINZA,
           ),
           child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
             spacing: 10,
             children: [
               Text(
