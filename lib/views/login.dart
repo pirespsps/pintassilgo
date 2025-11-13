@@ -97,8 +97,8 @@ class _LoginState extends State<Login> {
                     Field(
                       text: "usuário",
                       fieldController: _nomeController,
-                      width: size.width - 50,
-                      height: 50,
+                      width: size.width * 85 / 100,
+                      height: size.height * 5 / 100,
                       validator: (value){
                         if(value == null || value.trim().isEmpty ){
                           return 'este campo é obrigatório';
@@ -111,8 +111,8 @@ class _LoginState extends State<Login> {
                     Field(
                       text: "senha",
                       fieldController: _senhaController,
-                      width: size.width - 50,
-                      height: 50,
+                      width: size.width * 85 / 100,
+                      height: size.height * 5 / 100,
                       validator: (value){
                         if(value == null || value.trim().isEmpty ){
                           return 'este campo é obrigatório';

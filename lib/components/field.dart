@@ -53,14 +53,15 @@ class _FieldFormState extends State<Field> {
               ),
             ),
             SizedBox(
-              height: widget.height == null? (widget.height! * 0.6) : 30,
+              height: widget.height == null? (widget.height! * 0.8) : 30,
               child: Padding(
-                padding: const EdgeInsets.all(6.0),
+                padding: const EdgeInsets.fromLTRB(6.0, 0.0, 6.0, 6.0),
                 child: TextFormField(
+                  
                   controller: widget.fieldController,
-                  style: TextStyle(color: Colors.black),
+                  style: TextStyle(color: Colors.black, fontSize: 25),
                   cursorColor: Colors.black,
-                  cursorHeight: 15,
+                  cursorHeight: 20,
                   validator: widget.validator ?? 
                   (value){
                     if(value == null || value.isEmpty){
@@ -75,6 +76,7 @@ class _FieldFormState extends State<Field> {
                     enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: CINZA_ESCURO)),
                     focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: CINZA_ESCURO)),
                     suffixIcon: widget.suffixIcon ??
+                    
                     SizedBox(width: 0, height: 0,),
                   ),
       
