@@ -5,6 +5,7 @@ import 'package:pintassilgo/components/pinta.dart';
 import 'package:pintassilgo/models/Folder/folder.dart';
 import 'package:pintassilgo/models/Image/image.dart';
 import 'package:pintassilgo/models/Image/imageDAO.dart';
+import 'package:pintassilgo/views/novaPasta.dart';
 
 class FolderView extends StatefulWidget {
   final Folder folder;
@@ -56,7 +57,16 @@ class _FolderViewState extends State<FolderView> {
                   )
                 ),
                 IconButton(
-                  onPressed: () {},
+                  onPressed: () async {
+                    await Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) {
+                      return NovaPasta(folder: widget.folder);
+                    }));
+                    
+                    setState(() {
+                      
+                    });
+
+                  },
                   icon: Icon(Icons.edit),
                   iconSize: size.width * 10 / 100,
                 ),

@@ -43,7 +43,10 @@ abstract class GenericDAO<T> {
       return null;
     }
     Database db = await DatabaseHelper.instance.database;
-    return await fromMap(db.query(table, where: 'id = ?', whereArgs: [id]));
+
+    var query = await db.query(table, where: 'id = ?', whereArgs: [id]);
+
+    return await fromMap(query.first);
   }
 
 }

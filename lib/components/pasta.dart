@@ -10,8 +10,9 @@ import 'package:pintassilgo/views/folderView.dart';
 class Pasta extends StatefulWidget {
   final String nome;
   final Folder pasta;
+  final Function updateParent;
 
-  const Pasta({super.key, required this.nome, required this.pasta});
+  const Pasta({super.key, required this.nome, required this.pasta, required this.updateParent});
 
   @override
   State<Pasta> createState() => _PastaState();
@@ -33,10 +34,16 @@ class _PastaState extends State<Pasta> {
         child: Stack(
           children: [
             GestureDetector(
-              onTap: () {
-                Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) {
+              onTap: () async {
+                await Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) {
                   return FolderView(folder: widget.pasta);
                 }));
+
+                setState(() {
+                  
+                });
+
+                widget.updateParent();
               }, 
               child: Stack(
                 children: [

@@ -59,6 +59,7 @@ class _MyHomePageState extends State<MyHomePage> {
                               child: Pasta(
                                 nome: folderList[index].name,
                                 pasta: folderList[index],
+                                updateParent: update,
                               ),
                             );
                           },
