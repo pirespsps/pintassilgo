@@ -148,6 +148,7 @@ class _LoginState extends State<Login> {
                             style: TextStyle(fontSize: 20),
                           ),
                           onPressed: () async {
+                            setState(() {});
                           if (_formKey.currentState!.validate()){
                             login();
                           }   

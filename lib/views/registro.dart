@@ -123,8 +123,8 @@ class _RegistroState extends State<Registro> {
                         validator: (value) {
                           if (value == null || value.trim().isEmpty) {
                             return 'este campo é obrigatório';
-                            }else if(value != _senha){
-                              return 'este campo não corresponde ao campo de senha';
+                            }else if(value != _senhaController.text){
+                              return 'este campo não corresponde à senha';
                           } else {
                             return null;
                           }
@@ -158,10 +158,9 @@ class _RegistroState extends State<Registro> {
                               style: TextStyle(fontSize: 20),
                             ),
                             onPressed: () async {
-                              //entrar no site
-
-
-
+                              setState(() {
+                                
+                              });
                               if (_formKey.currentState!.validate()){
                                 dao.registro(User(name: _user, password: _senha))
                                 .whenComplete((){
