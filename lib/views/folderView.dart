@@ -37,6 +37,10 @@ class _FolderViewState extends State<FolderView> {
       50,
     );
 
+    setState(() {
+      
+    });
+
     return Scaffold(
       body: Column(
         children: [
@@ -85,7 +89,6 @@ class _FolderViewState extends State<FolderView> {
                       builder: (context) =>
                           getDialog(context, widget.folder.id!),
                     );
-
                     setState(() {});
                   },
                   icon: Icon(Icons.delete),
