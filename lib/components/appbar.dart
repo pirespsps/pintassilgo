@@ -5,6 +5,7 @@ import 'package:flutter/widgets.dart';
 import 'package:pintassilgo/views/configView.dart';
 import 'package:pintassilgo/views/novaImagem.dart';
 import 'package:pintassilgo/views/novaPasta.dart';
+import 'package:pintassilgo/views/novaTag.dart';
 
 class Appbar extends StatefulWidget {
   const Appbar({super.key, required this.updateParent});
@@ -89,7 +90,18 @@ class _AppbarState extends State<Appbar> {
                                                 widget.updateParent();
                                               }, 
                                               child: Text("Criar nova pasta")
-                                            )
+                                            ),
+                                            TextButton(
+                                              onPressed: () async {
+                                                removeOverlayAdd();
+                                                await Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) {
+                                                  return NovaTag();
+                                                }));
+
+                                                widget.updateParent();
+                                              }, 
+                                              child: Text("Criar nova tag")
+                                            ),
                                           ],
                                         )
                                       ),
