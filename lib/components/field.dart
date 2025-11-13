@@ -73,6 +73,8 @@ class _FieldFormState extends State<Field> {
                   (value){},
                   
                   decoration: InputDecoration(
+                    contentPadding: EdgeInsets.zero,
+                    isDense: true,
                     enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: CINZA_ESCURO)),
                     focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: CINZA_ESCURO)),
                     suffixIcon: widget.suffixIcon ??
