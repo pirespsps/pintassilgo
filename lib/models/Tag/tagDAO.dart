@@ -1,3 +1,4 @@
+import 'package:pintassilgo/dataBaseHelper.dart';
 import 'package:pintassilgo/models/Tag/tag.dart';
 import 'package:pintassilgo/models/genericDAO.dart';
 
@@ -16,5 +17,6 @@ class TagDAO extends GenericDAO<Tag> {
   Map<String, dynamic> toMap(Tag object){
     return object.toMap();
   }
+
 
 }
