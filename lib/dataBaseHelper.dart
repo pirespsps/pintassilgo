@@ -37,7 +37,6 @@ class DatabaseHelper {
       date TEXT,
       idFolder INTEGER NOT NULL, 
       isFavorite INTEGER,
-      fileExtension TEXT NOT NULL,
 
       FOREIGN KEY (idFolder) REFERENCES tbFolder(id)
       ); ''');

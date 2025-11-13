@@ -75,8 +75,7 @@ class _NovaImagemState extends State<NovaImagem> {
         dir.path,
         "/images/",
         widget.imageEdit!.id.toString(),
-        ".",
-        widget.imageEdit!.fileExtension,
+        ".png",
       );
 
       final file = File(path);
@@ -292,7 +291,6 @@ class _NovaImagemState extends State<NovaImagem> {
       title: _tituloController.text,
       date: DateTime.now(),
       idFolder: _selectedFolder!.id,
-      fileExtension: "png",
     );
 
     ImageDAO imagedao = ImageDAO();
