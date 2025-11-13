@@ -8,8 +8,8 @@ import 'package:pintassilgo/models/Folder/folderDAO.dart';
 import 'package:pintassilgo/models/User/user.dart';
 
 class NovaPasta extends StatefulWidget {
-  final Pasta? pasta;
-  const NovaPasta({super.key, this.pasta});
+  final Folder? folder;
+  const NovaPasta({super.key, this.folder});
 
   @override
   State<NovaPasta> createState() => _NovaPasta();
@@ -23,6 +23,12 @@ class _NovaPasta extends State<NovaPasta> {
   void dispose() {
     super.dispose();
     _nomeController.dispose();
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _nomeController.text = widget.folder?.name ?? "";
   }
 
   @override
@@ -42,7 +48,7 @@ class _NovaPasta extends State<NovaPasta> {
             spacing: 10,
             children: [
               Text(
-                (widget.pasta == null?  "nova pasta" : "editar pasta"),
+                (widget.folder == null?  "editar pasta" : "nova pasta"),
                 textScaler: TextScaler.linear(4),
                 style: TextStyle(color: MARROM),
               ),
@@ -70,15 +76,29 @@ class _NovaPasta extends State<NovaPasta> {
                   FilledButton(
                     onPressed: () async {
 
+                      FolderDAO folderDAO = FolderDAO();
+
+                      if(widget.folder != null){
+
                       final storage = FlutterSecureStorage();
 
                       String? id = await storage.read(key: "user");
 
                       Folder folder = Folder(name: _nomeController.text);
-                      folder.idUser = int.parse(id!); //trocar
+                      folder.idUser = int.parse(id!);
 
-                      FolderDAO folderDAO = FolderDAO();
                       folderDAO.add(folder);
+                      
+                      }else{
+
+                       Folder? pasta = await folderDAO.find(widget.folder!.id);
+
+                       pasta!.name = _nomeController.text;
+
+                       folderDAO.update(pasta, pasta.id);
+
+                      }
+
                       Navigator.pop(context);
                     },
 
@@ -86,7 +106,9 @@ class _NovaPasta extends State<NovaPasta> {
                       backgroundColor: MARROM,
                       foregroundColor: BRANCO,
                     ),
-                    child: Text("criar"),
+                    child: widget.folder == null
+                    ?Text("criar")
+                    :Text("salvar"),
                   ),
                 ],
               ),

@@ -17,7 +17,12 @@ abstract class GenericDAO<T> {
     return await db.delete(table, where: 'id = ?', whereArgs: [id]);
   }
 
-  Future<int> update(T object, int id)async{
+  Future<int?> update(T object, int? id)async{
+    
+    if(id == null){
+      return null;
+    }
+
     Database db = await DatabaseHelper.instance.database;
     return await db.update(table, toMap(object), where: 'id = ?', whereArgs: [id]);
   }
@@ -31,6 +36,14 @@ abstract class GenericDAO<T> {
     : [];
 
     return objectList;
+  }
+
+  Future<T?> find(int? id) async{
+    if(id == null){
+      return null;
+    }
+    Database db = await DatabaseHelper.instance.database;
+    return await fromMap(db.query(table, where: 'id = ?', whereArgs: [id]));
   }
 
 }
