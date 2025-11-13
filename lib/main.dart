@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:pintassilgo/components/appbar.dart';
 import 'package:pintassilgo/components/pasta.dart';
 import 'package:pintassilgo/dataBaseHelper.dart';
+import 'package:pintassilgo/views/home.dart';
 import 'package:pintassilgo/views/login.dart';
 import 'package:pintassilgo/views/novaPasta.dart';
 import 'package:pintassilgo/views/registro.dart';
@@ -18,11 +20,17 @@ const CINZA_ESCURO = Color.fromARGB(255, 110, 110, 110);//"#dfdfdf"
 const VERMELHO = Color.fromARGB(255, 232, 65, 42); //#e8412a
 void main() async {
 
-  runApp(const MyApp());
+  WidgetsFlutterBinding.ensureInitialized();
+
+  final FlutterSecureStorage storage = FlutterSecureStorage();
+  final isLogged = await storage.read(key: "user") != null;
+
+  runApp(MyApp( isLogged: isLogged,));
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  final bool isLogged;
+  MyApp({super.key, this.isLogged = false});
 
   @override
   Widget build(BuildContext context) {
@@ -35,7 +43,9 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         colorScheme: ColorScheme(surface: MARROM, primary: BRANCO, secondary: MARROM_CLARO, brightness: Brightness.light, error: VERMELHO, onError: BRANCO, onPrimary: Colors.black, onSecondary: BRANCO, onSurface: BRANCO),
       ),
-      home: Login(),
+      home: isLogged
+      ?MyHomePage()
+      :Login(),
     );
   }
 }
