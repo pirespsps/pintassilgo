@@ -2,10 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:pintassilgo/components/appbar.dart';
 import 'package:pintassilgo/components/pinta.dart';
+import 'package:pintassilgo/models/Folder/folder.dart';
+import 'package:pintassilgo/models/Image/image.dart';
+import 'package:pintassilgo/models/Image/imageDAO.dart';
 
 class FolderView extends StatefulWidget {
-  final String nome;
-  const FolderView({super.key, required this.nome});
+  final Folder folder;
+  const FolderView({super.key, required this.folder});
 
   @override
   State<FolderView> createState() => _FolderViewState();
@@ -19,9 +22,13 @@ class _FolderViewState extends State<FolderView> {
     });
   }
 
+  ImageDAO imageDao = ImageDAO();
+
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
+
+    Future<List<Imagem>> images = imageDao.imagesByFolder(widget.folder.id!, 50); 
 
     return Scaffold(
       body: Column(
@@ -42,7 +49,7 @@ class _FolderViewState extends State<FolderView> {
                   iconSize: size.width * 10 / 100,
                 ),
                 Text(
-                  widget.nome,
+                  widget.folder.name,
                   style: GoogleFonts.notoSans(
                     fontSize: 40,
                     fontWeight: FontWeight.bold
@@ -61,38 +68,28 @@ class _FolderViewState extends State<FolderView> {
             ),
           ),
           Expanded(
-            child: ListView(
-              
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    Pinta(),
-                    Pinta(),
-                  ],
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    Pinta(),
-                    Pinta(),
-                  ],
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    Pinta(),
-                    Pinta(),
-                  ],
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    Pinta(),
-                    Pinta(),
-                  ],
-                ),
-              ],
+            child: FutureBuilder(
+              future: images, 
+              builder: (context, snapshot) {
+                if (snapshot.data != null) {
+                  double index = ((snapshot.data!.length / 2) * 10 + (((snapshot.data!.length / 2) * 10) % 10 * 2)) / 10;
+                  return ListView.builder(
+                    itemBuilder: (context, index) {
+                      return Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          Pinta(imagem: snapshot.data![index*2]),
+                          index*2 + 1 < snapshot.data!.length ? Pinta(imagem: snapshot.data![index*2 + 1]) : Container( width: size.width * 40 / 100,),
+                        ],
+                      );
+                    },
+
+                    itemCount: int.parse("${index}".split(".")[0]),
+                  );
+                } else {
+                  return Text("Não há nenhuma imagem nessa pasta!");
+                }
+              },
             )
           )
         ],
@@ -100,3 +97,13 @@ class _FolderViewState extends State<FolderView> {
     );
   }
 }
+
+/*
+Row(
+  mainAxisAlignment: MainAxisAlignment.spaceAround,
+  children: [
+    Pinta(),
+    Pinta(),
+  ],
+),
+*/

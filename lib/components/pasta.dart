@@ -35,7 +35,7 @@ class _PastaState extends State<Pasta> {
             GestureDetector(
               onTap: () {
                 Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) {
-                  return FolderView(nome: widget.nome);
+                  return FolderView(folder: widget.pasta);
                 }));
               }, 
               child: Stack(
@@ -68,7 +68,7 @@ class _PastaState extends State<Pasta> {
                       );
                     }
                   ),
-                  widget.pasta.images != null ? Container() : Positioned(
+                  widget.pasta.images!.length != 0 ? Container() : Positioned(
                     child: Container(
                       height: size.height * 20 / 100,
                       width: size.height * 80 / 100,
