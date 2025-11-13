@@ -16,7 +16,7 @@ class DatabaseHelper {
     await db.execute('''
       CREATE TABLE tbUser(
       id INTEGER PRIMARY KEY AUTOINCREMENT, 
-      name TEXT NOT NULL, 
+      name TEXT NOT NULL,
       password TEXT NOT NULL
       ); ''');
 
@@ -38,7 +38,7 @@ class DatabaseHelper {
       idFolder INTEGER NOT NULL, 
       isFavorite INTEGER,
 
-      FOREIGN KEY (idFolder) REFERENCES tbFolder(id)
+      FOREIGN KEY (idFolder) REFERENCES tbFolder(id) ON DELETE CASCADE
       ); ''');
 
       await db.execute('''
@@ -49,7 +49,7 @@ class DatabaseHelper {
       idImage INT NOT NULL, 
       link TEXT, 
 
-      FOREIGN KEY (idImage) REFERENCES tbImage(id)
+      FOREIGN KEY (idImage) REFERENCES tbImage(id) ON DELETE CASCADE
       ); ''');
 
       await db.execute('''
@@ -75,7 +75,9 @@ class DatabaseHelper {
     Directory documentsDirectory = await getApplicationDocumentsDirectory(); //<---
     String path = join(documentsDirectory.path, _dbName);
 
-    return openDatabase(path, onCreate: _createDb, version: _version);
+    return openDatabase(path, onCreate: _createDb, onOpen: (db) async{
+      await db.execute("PRAGMA foreign_keys = ON");
+    }, version: _version);
   }
 
   static final DatabaseHelper instance = DatabaseHelper._privateConstructor();
