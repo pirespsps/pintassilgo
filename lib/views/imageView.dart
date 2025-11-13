@@ -54,37 +54,31 @@ class _ImageviewState extends State<Imageview> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Row(
-                            children: [
-                              Text(
-                                widget.imagem.title,
-                                style: TextStyle(fontSize: 60),
-                              ),
-                              IconButton(
-                                onPressed: () async {
-                                  await Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (BuildContext context) {
-                                        return NovaImagem(imageEdit: widget.imagem);
-                                      },
-                                    ),
-                                  );
-                                },
-                                icon: Icon(Icons.edit),
-                              ),
-                              IconButton(
-                                onPressed: () async {
-                                  await showDialog<String>(
-                                    context: context,
-                                    builder: (context) =>
-                                        getDeleteDialog(context, widget.imagem),
-                                  );
-                                  Navigator.pop(context);
-                                },
-                                icon: Icon(Icons.delete),
-                              ),
-                            ],
+                          SingleChildScrollView(
+                            scrollDirection: Axis.horizontal,
+                            child: Row(
+                              children: [
+                                Text(
+                                  widget.imagem.title,
+                                  style: TextStyle(fontSize: 60),
+                                ),
+                                IconButton(
+                                  onPressed: () {},
+                                  icon: Icon(Icons.edit),
+                                ),
+                                IconButton(
+                                  onPressed: () async {
+                                    await showDialog<String>(
+                                      context: context,
+                                      builder: (context) =>
+                                          getDeleteDialog(context, widget.imagem),
+                                    );
+                                    Navigator.pop(context);
+                                  },
+                                  icon: Icon(Icons.delete),
+                                ),
+                              ],
+                            ),
                           ),
                           Text(
                             widget.imagem.date.toString().split(" ")[0],
