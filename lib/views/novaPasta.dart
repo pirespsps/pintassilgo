@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:pintassilgo/components/field.dart';
+import 'package:pintassilgo/components/pasta.dart';
 import 'package:pintassilgo/main.dart';
 import 'package:pintassilgo/models/Folder/folder.dart';
 import 'package:pintassilgo/models/Folder/folderDAO.dart';
 import 'package:pintassilgo/models/User/user.dart';
 
 class NovaPasta extends StatefulWidget {
-  final User? user;
-  const NovaPasta({super.key, this.user});
+  final Pasta? pasta;
+  const NovaPasta({super.key, this.pasta});
 
   @override
   State<NovaPasta> createState() => _NovaPasta();
@@ -41,7 +42,7 @@ class _NovaPasta extends State<NovaPasta> {
             spacing: 10,
             children: [
               Text(
-                "nova pasta",
+                (widget.pasta == null?  "nova pasta" : "editar pasta"),
                 textScaler: TextScaler.linear(4),
                 style: TextStyle(color: MARROM),
               ),

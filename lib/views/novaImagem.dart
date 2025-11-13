@@ -28,10 +28,19 @@ class NovaImagem extends StatefulWidget {
   Future<List<Folder>> getFolders() async {
     final FolderDAO folderDAO = FolderDAO();
     final id = await getUserId();
-    if (id == null) {
+    if (id == null || id.isEmpty) {
+      print("Id antes de parse null");
       return [];
     }
-    return await folderDAO.foldersByUser(int.parse(id));
+
+    final userId = int.tryParse(id);
+
+    if(userId == null){
+      print("Id depois de parse null");
+      return [];
+    }
+
+    return await folderDAO.foldersByUser(userId);
   }
 }
 
@@ -113,6 +122,8 @@ class _NovaImagemState extends State<NovaImagem> {
                         if (!value.contains(".") || !value.contains("/")) {
                           return "Insira um link válido";
                         }
+
+                        return null;
                       },
                     ),
 
@@ -131,7 +142,7 @@ class _NovaImagemState extends State<NovaImagem> {
                               return Padding(
                                 padding: const EdgeInsets.all(8),
                                 child: Text(
-                                  'Erro ao carregar pastas: ${snapshot.error}',
+                                  "Erro ao carregar pastas: ${snapshot.error}",
                                 ),
                               );
                             }
@@ -142,7 +153,7 @@ class _NovaImagemState extends State<NovaImagem> {
                               return Padding(
                                 padding: EdgeInsets.all(8),
                                 child: Text(
-                                  'Pastas vazias',
+                                  "Pastas vazias",
                                 ),
                               );
                             }
